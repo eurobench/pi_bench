@@ -4,23 +4,31 @@ clear
 close all
 
 % set up TCP IP connection for Server
-t = tcpip('localhost', 30000, 'NetworkRole', 'server');
+t = tcpip('0.0.0.0', 30000, 'NetworkRole', 'server');
 
 % get information about size of data that will be arriving
-size_data = 1*10000*2; %we know this only because we created the data previously
+size_data = 1*1000*2; %we know this only because we created the data previously
 t.InputBufferSize = size_data;
+
+fopen(t);
 
 % receive data (local function)
 disp('Waiting for data to arrive')
 
 while t.BytesAvailable ==0
-    pause(0.5)
+    pause(1)
 end
-% preversion very easy
-data = fread(t, size_data, 'uint16');
+% data arrives in a column
+% Size*Precision must be equal to InputBufferSize 
+% uint 16 has 2 Bytes --> divided by 2
+data = fread(t, size_data/2, 'uint16');
 
 disp('Data arrived')
 plot(data)
+title('Received')
+
+%end communication
+fclose(t);
     % needs GUI control
     % create mat file where data is stored later
     % set data size for receiving data --> adjust buffer
