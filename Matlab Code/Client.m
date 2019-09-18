@@ -11,15 +11,14 @@ close all
 % uint16 data 
 % collect and send data
     % 'collect' = load special data file that was created before
-    load data.mat
-    data = data';
-    % set outpt Buffer Size according to Data Size
-    size_data = size(data,1)*size(data,2)*2; %2 Bytes per sample 
+    %load data.mat
+    %data = data';
+    % set outpt Buffer Size according to size of packs
+    %size_data = size(data,1)*size(data,2)*2; %2 Bytes per sample 
+    data = randi(100,100,1,'uint16');
+    size_data = 200;
     t.OutputBufferSize = size_data;
-    
-    %plot(data)
-    %title('Sent')
-        
+           
     % try to open the tcpip object
     fopen(t);
     
@@ -31,10 +30,21 @@ close all
         
     % --> first only fwrite
     disp('Trying to send data')
-    for a = 1:10
-        data_part = data(1+(a-1)*100:100+(a-1)*100);
+    
+    NumPackSent = 0;
+    data_left = 0; 
+    while (data_left < 50)
+        data_add = randi(100,100,1, 'uint16');
+        data = horzcat(data,data_add);
+        data_part = data(1+NumPackSent*100:100+NumPackSent*100);
         fwrite(t, data_part, 'uint16');
+        pause(0.5)
+        NumPackSent = NumPackSent + 1;
+        %only for beginning
+        data_left = data_left + 1;
     end
     
+    % tell whether data sending was succesfull
     disp('Data sent successfully')
-    % tell whether data sending was succesfull or not 
+    disp(['Number of sent packs:', num2str(NumPackSent)])
+   

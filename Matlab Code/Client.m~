@@ -3,25 +3,30 @@
 clear
 close all
 
-data = (1,1000, 'ui)
+%data = randi(100,1, 100, 'uint16');
+% set up TCP IP connection for Client
+    t= tcpip('localhost',30000,'NetworkRole','client');
 
 % get information about size of data that will be sent
 % uint16 data 
 % collect and send data
     % 'collect' = load special data file that was created before
-   % load data.mat
+    %load data.mat
+    %data = data';
     % set outpt Buffer Size according to Data Size
-   % size_data = size(data,1)*size(data,2)*2; %2 Bytes per sample 
+    %size_data = size(data,1)*size(data,2)*2; %2 Bytes per sample 
+    data = randi(100,100,1,'uint16');
+    size_data = 200;
+    t.OutputBufferSize = size_data;
     
-    % set up TCP IP connection for Client
-    t = tcpip('localhost', 30000, 'NetworkRole', 'client');
+% sending data continously --> function that is called later during while
+% loop of sending
 
-    
+        
     % try to open the tcpip object
     fopen(t);
     
-    pause(1);
-%     % when tcpip is open save data temporarily
+%     % when tcpip is open save data temporarily  
 %     % while loop 
 %         % try to send data --> break at the end
 %         % save data in matfile
@@ -29,7 +34,20 @@ data = (1,1000, 'ui)
         
     % --> first only fwrite
     disp('Trying to send data')
-    fwrite(t, data, 'uint16');
+    
+    NumPackSent = 0;
+    data_left = 0; 
+    while (data_left < 50)
+        data_add = randi(100,100,1, 'uint16');
+        data = horzcat(data,data_add);
+        data_part = data(1+NumPackSent*100:100+NumPackSent*100);
+        fwrite(t, data_part, 'uint16');
+        pause(0.5)
+        NumPackSent = NumPackSent + 1;
+        %only for beginning
+        data_left = data_left + 1;
+    end
     
     disp('Data sent successfully')
+    disp(('Number of sent packs: %d',NumPackSent))
     % tell whether data sending was succesfull or not 
