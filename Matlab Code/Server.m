@@ -7,8 +7,11 @@ close all
 t = tcpip('0.0.0.0', 30000, 'NetworkRole', 'server');
 
 % get information about size of data that will be arriving
-size_data = 1*1000*2; %we know this only because we created the data previously
+size_data = 1*100*2; %we know this only because we created the data previously
 t.InputBufferSize = size_data;
+
+% create mat file where data is stored later
+data_storage = zeros(100,10);
 
 fopen(t);
 
@@ -21,16 +24,17 @@ end
 % data arrives in a column
 % Size*Precision must be equal to InputBufferSize 
 % uint 16 has 2 Bytes --> divided by 2
-data = fread(t, size_data/2, 'uint16');
+for a = 1:10
+    data = fread(t, size_data/2, 'uint16');
+    data_storage(:,a) = data;
+end
 
 disp('Data arrived')
-plot(data)
-title('Received')
+save data_storage
 
 %end communication
 fclose(t);
     % needs GUI control
-    % create mat file where data is stored later
     % set data size for receiving data --> adjust buffer
     % While streaming = 1 
         % while loop
