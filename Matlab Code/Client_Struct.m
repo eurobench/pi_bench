@@ -20,7 +20,7 @@ disp('Trying to send data...')
 NumPackSent = 0;
 error = 0;
     
-    while (strcmp(t.Status, 'closed') && strcmp(s.Status, 'closed'))
+    while (strcmp(t.Status, 'closed'))
         try 
             fopen(t);
             disp('TCP IP connection established')
@@ -44,9 +44,6 @@ error = 0;
             NumPackSent = NumPackSent + 1;
         catch
             disp('Server not listening anymore')
-            break
-        end
-        if s.BytesAvailable > 0
             break
         end
     end
