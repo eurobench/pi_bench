@@ -10,7 +10,7 @@ NumPackReceived = 0;
 % set up TCP IP connection for Data Server
 t = tcpip('0.0.0.0', 30000, 'NetworkRole', 'server');
 %t = tcpip('129.69.168.20', 30000, 'NetworkRole', 'server');
-
+ 
 % % initialize ROS node to retrieve time ROS-compatible
 % rosinit;
 

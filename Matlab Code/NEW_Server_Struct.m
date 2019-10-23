@@ -1,5 +1,5 @@
-%% Main script: Client 
-% Client: sending data
+%% Main script: Server
+% Server: sending data
 clear
 close all
 
