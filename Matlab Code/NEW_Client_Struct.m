@@ -122,7 +122,7 @@ while or(streaming ==1, streaming == 2)
         NumStreamSession = NumStreamSession +1 ;
         NumPackReceived = 0;
         while streaming == 2
-            %data_junk = fread(t, size_data/8, 'double');
+            data_junk = fread(t, size_data/8, 'double');
             pause(0.00001)
         end
     end
