@@ -13,7 +13,7 @@ close all
 
 % enter data here
 subject = 1;
-session = 1;
+num_session = 1;
 
 %rosinit;
 % define sending node
@@ -37,7 +37,6 @@ msg_AR1 = ros2message(AR1_pub);
 msg_AR2 = ros2message(AR2_pub);
 
 % define header
-seq = session; 
 frame = 1; % numbers of packages
 frame_id = num2str(frame);
 
@@ -51,7 +50,7 @@ while true
     % AR 1
     % update time header
     [s,ns]= getROStime; %instead of getting time using time stamps of NI box
-    msg_AR1.header.sequence = 1;
+    msg_AR1.header.sequence = num_session;
     msg_AR1.header.stamp.sec = int32(s);
     msg_AR1.header.stamp.nanosec = uint32(ns);
     msg_AR1.header.frame_id = frame_id;
@@ -72,6 +71,7 @@ while true
      % AR 2
     % update time header
     [s,ns]= getROStime;
+    msg_AR2.header.sequence = num_session;
     msg_AR2.header.stamp.sec = int32(s);
     msg_AR2.header.stamp.nanosec = uint32(ns);
     msg_AR2.header.frame_id = frame_id;
