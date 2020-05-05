@@ -1,4 +1,4 @@
-  %% Main ROS Publisher using ROS
+%% Main ROS Publisher using ROS
 % master node which is publishing the raw data of the chair consisting of:
 %   - 2 arm rails:
 %           - topic AR1 and AR2
@@ -6,16 +6,27 @@
 %   - 2 force plates (not added yet): 
 %           - topic FP1 and FP2
 %           - ROS message format: still needs to be defined
-% GUIDE: type rosinit, which is making the publisher node the master node, then run script to start publishing;
-%        to close ROS node type rosshutdown
+%   Raw data is saved in a csv file as well.
+%
+% GUIDE: type rosinit, which is making the publisher node the master node;
+%        enter the needed values in the section ENTER VALUES then run script;
+%        if the acqusition should have a special duration, set iscont = 0,
+%        type in duration and run the script;
+%        if the acqusition should be conitnous, set iscont = 1 and run the script; 
+%        to stop the acquisition type any button while having the figure
+%        opened;
+%        to close ROS node, type rosshutdown;
 
-%% Initiation process
 clearvars -except num_session 
 close all
 
+%% ENTER VALUES
 % ENTER SUBJECT NUMBER HERE
-subject = 1;
-
+subject = 2;
+% ENTER WHETHER RECORDING IS CONTINOUS OR TAKES A SPECIAL DURATION
+iscont = 0;
+duration =  5; %not necessary to be typed in when acquisition is continous
+%% Initiation process
 % sessions are counted after starting matlab
 if exist('num_session', 'var')
     num_session = num_session + 1;
@@ -23,15 +34,38 @@ else
     num_session = 1;
 end
 
+% create name of the file
+if subject < 10
+    subject_str = append('subject_0', num2str(subject));
+else
+    subject_str = append('subject_', num2str(subject));
+end
+
+if num_session < 10
+    num_session_str = append('0', num2str(num_session));
+else
+    num_str = num2str(num_session);
+end
+
 %set up variables for acquiring data
 devicename = 'Dev2'; % Dev1 real device, Dev2 simulated device
 channels = (1:14); % when measuring 2 AR, 2 FP
-iscont = true; 
-duration =  2; %not necessary to be typed in when acquisition is continous
 fsamp = 2000;
 range = [-10,10];
-global filename 
-filename = sprintf('RawData_subj%d_%d.csv', subject, num_session);
+filename = append(subject_str, '_chair_raw_', num_session_str, '.csv');
+
+% check whether filename already exists to not overwrite any data
+counter = 1;
+while exist(filename, 'file')==2
+    filename = append(subject_str, '_chair_raw_', num_session_str, '_0', num2str(counter), '.csv');
+    counter = counter + 1;
+end
+
+%create txt file with all the information about raw data
+fileID = fopen('raw_data.txt','w');
+text = sprintf('Raw data of the chair acquired by an AD-Converter running with a frequency of %d Hz.\n 1st column: time in seconds.\n 2nd-7th column: force and torque armrail 1.\n 8th-13th column: force and torque armrail 2', fsamp);
+fprintf(fileID,text);
+fclose(fileID);
 
 % defining the published topics
 % publishers concerning the arm rails 
@@ -49,7 +83,6 @@ pause(1)
 frame = 1; % numbers of packages
 msg_AR1.Header.Seq = num_session;
 msg_AR2.Header.Seq = num_session;
-
 %% Creating session s for the NI instrument 
 
 s = daq.createSession('ni');
@@ -69,17 +102,12 @@ if iscont==0
 end
 
 % builds a signals sub-field within the field UserData of the current NI session.
-
 s.UserData.signals = [];
 s.UserData.frames = frame;
-
-% this file is created and opened in write mode for the final logging of the recorded data
-fid1 = fopen(filename,'w');
 
 % a listener with a callback function to addUserData is used to append the data to the 
 % structure s.UserData.signals each time data is available in the NI data
 % stream and at the same time to publish the available data
-
 lh = addlistener(s,'DataAvailable',@(src, evt) addUserData(src,evt));
 
 
@@ -88,23 +116,25 @@ if iscont
     s.startBackground;
     disp('press a key to stop acquisition')
     w = waitforbuttonpress;
+    disp('Button pressed')
     s.stop
 else
+    disp('Data is sent...')
     s.startForeground;
 end
 
 
 % separates time reference from the actual data and creates an external
 %log file
-% 
-%     time = s.UserData.signals(:,1);
-%     data = s.UserData.signals(:,2:end);
-%     fwrite(fid1,[time,data],'double');
+tbl = array2table(s.UserData.signals(:, 1:13));
+tbl.Properties.VariableNames = {'time','F_x_ar1','F_y_ar1','F_z_ar1', 'T_x_ar1','T_y_ar1','T_z_ar1', 'F_x_ar2','F_y_ar2','F_z_ar2', 'T_x_ar2','T_y_ar2','T_z_ar2'};
+
+writetable(tbl, filename, 'Delimiter',',')
 
 
-fclose(fid1);
 delete(lh);
-
+disp('Recording stopped.')
+disp('Data sent.')
 close all 
     
 function addUserData(src,evt) 
