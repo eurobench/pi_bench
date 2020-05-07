@@ -63,6 +63,8 @@ end
 
 %create txt file with all the information about raw data
 fileID = fopen('raw_data.txt','w');
+
+% What kind of information needs to be added here about the system?
 text = sprintf('Raw data of the chair acquired by an AD-Converter running with a frequency of %d Hz.\n 1st column: time in seconds.\n 2nd-7th column: force and torque armrail 1.\n 8th-13th column: force and torque armrail 2', fsamp);
 fprintf(fileID,text);
 fclose(fileID);
@@ -115,7 +117,7 @@ lh = addlistener(s,'DataAvailable',@(src, evt) addUserData(src,evt));
 if iscont
     s.startBackground;
     disp('press a key to stop acquisition')
-    w = waitforbuttonpress;
+    w = waitforbuttonpress;  % exit strategy needed: after 1 minute should exit waitforbuttonpress automatically even when not stopped with GUI
     disp('Button pressed')
     s.stop
 else
