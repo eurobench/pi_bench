@@ -14,7 +14,7 @@
 %        run script to start and stop streaming with the GUI
 %        to close ROS node type rosshutdown;
 
-clearvars -except num_session 
+clearvars 
 close all
 
 %% ENTER VALUES
@@ -27,44 +27,6 @@ duration = 5;
 
 global reached 
 reached = 0;
-
-% sessions are counted after starting matlab
-if exist('num_session', 'var')
-    num_session = num_session + 1;
-else
-    num_session = 1;
-end
-
-% create name of the file
-if subject < 10
-    subject_str = append('subject_0', num2str(subject));
-else
-    subject_str = append('subject_', num2str(subject));
-end
-
-if num_session < 10
-    num_session_str = append('0', num2str(num_session));
-else
-    num_str = num2str(num_session);
-end
-
-filename_ar1 = append(subject_str, '_ar1_', num_session_str, '.csv');
-filename_ar2 = append(subject_str, '_ar2_', num_session_str, '.csv');
-% filename_ar1 = sprintf('AR1_%d.csv', num_session);
-% filename_ar2 = sprintf('AR2_%d.csv', num_session);
-
-% check whether filenames already exists to not overwrite any data
-counter = 1;
-while exist(filename_ar1, 'file')==2
-    filename_ar1 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
-    counter = counter + 1;
-end
-
-counter = 1;
-while exist(filename_ar2, 'file')==2
-    filename_ar1 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
-    counter = counter + 1;
-end
 
 % defining global counting variables for topics AR1 and AR2
 global n 
@@ -131,6 +93,37 @@ if (streaming == 2 || (active == 0))
     disp('Saving data...')
     clear AR1_sub
     clear AR2_sub
+    
+    num_session = data_m_ar1(1,1).Header.Seq;
+    % create name of the file
+    if subject < 10
+        subject_str = append('subject_0', num2str(subject));
+    else
+        subject_str = append('subject_', num2str(subject));
+    end
+
+    if num_session < 10
+        num_session_str = append('0', num2str(num_session));
+    else
+        num_str = num2str(num_session);
+    end
+
+    filename_ar1 = append(subject_str, '_ar1_', num_session_str, '.csv');
+    filename_ar2 = append(subject_str, '_ar2_', num_session_str, '.csv');
+
+    % check whether filenames already exists to not overwrite any data
+    counter = 1;
+    while exist(filename_ar1, 'file')==2
+        filename_ar1 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
+        counter = counter + 1;
+    end
+
+    counter = 1;
+    while exist(filename_ar2, 'file')==2
+        filename_ar1 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
+        counter = counter + 1;
+    end
+    
     
     % preparing received data for saving it in a table
     header_ar1 = [data_m_ar1(1:end).Header];
