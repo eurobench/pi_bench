@@ -1,0 +1,129 @@
+function [data_ni] = NI_acquisition(devicename,channels,fsamp_ni,range,maxtime)
+
+%[data_ni] = synch_acquisition(devicename,channels,,fsamp_ni,range,maxtime)
+%acquire data from a specified NI device in background mode
+%Required Inputs:
+%devicename: a string containing the name of the NI device
+%channels: a vector containing the analog input channels to acquire
+%fsamp_ni: sampling rate of the device
+%range: a two elements row vector indicating the range of the AD converter
+%maxtime: maximum duration of the acquisition in seconds. If maxtime is
+%zero, the acquisition must be stop manually through waitforbuttonpress
+%Cristiano De Marchis, May 2020
+
+%---- Creates the DAQ NI session and sets the main device parameters ----
+
+
+s = daq.createSession('ni');
+s.Rate = fsamp_ni;
+s.addAnalogInputChannel(devicename,channels,'Voltage');
+NChan = length(channels);
+
+for i = 1:NChan
+    s.Channels(i).Range = range;
+    s.Channels(i).TerminalConfig = 'SingleEnded';
+end
+
+s.IsContinuous = 1;
+% s.NotifyWhenDataAvailableExceeds = floor(fsamp_ni/20);
+s.IsNotifyWhenDataAvailableExceedsAuto = 1;
+
+%---- builds a signals sub-field within the field UserData of the current NI session.
+
+s.UserData.signals = [];
+
+
+%---- a listener with a callback function to addUserData is used to append
+%the data to the structure s.UserData.signals each time data are available
+%in the NI data stream
+
+
+lh = addlistener(s,'DataAvailable',@(src,evt) addUserData(src,evt));
+
+%---creates a timer to manage the acquisition
+
+N = round(maxtime);
+
+if maxtime==0
+    t = timer('StartDelay',1,'Period',1,'ExecutionMode','fixedRate');
+else
+    t = timer('StartDelay',1,'Period',1,'ExecutionMode','fixedRate', 'TasksToExecute',N);
+end
+
+%---creates a field within the timer structure to concatenate the
+%acquired data. NI data come in matrix form from a unique DAQ---%
+
+t.UserData.data_ni =[];
+
+t.StartFcn = {@buffers,s};
+t.TimerFcn = {@data_storage,s};
+t.StopFcn = {@stop_sensors,s};
+
+
+
+%---- NI data acquisition----
+pause(2);
+
+s.startBackground;
+
+pause(2);
+
+start(t);
+
+%here the user can press a button to stop the acquisition. However, if
+%maxtime has elapsed, the acquisition will stop before the user presses the
+%button
+
+if maxtime==0
+    disp('press a key to stop acquisition')
+    w = waitforbuttonpress;
+end
+
+pause(maxtime);
+
+stop(t);
+
+
+%---- files
+
+data_ni = t.UserData.data_ni;
+
+delete(t);
+
+end
+
+%NI event function
+function addUserData(src,evt)
+data = [evt.TimeStamps, evt.Data];
+src.UserData.signals = [src.UserData.signals;data];
+end
+
+%Start Function
+function buffers(~,~,src1)
+
+%when the timer starts, ni buffer is emptied
+
+src1.UserData.signals = [];
+
+end
+
+%Timer Function
+function data_storage(obj,~,src1)
+
+%ni device buffer is read and emptied
+
+obj.UserData.data_ni = [obj.UserData.data_ni;src1.UserData.signals];
+
+src1.UserData.signals = [];
+
+
+end
+
+%Stop Function
+function stop_sensors(~,~,src1)
+
+src1.stop;
+
+end
+
+
