@@ -44,7 +44,7 @@ end
 if num_session < 10
     num_session_str = append('0', num2str(num_session));
 else
-    num_str = num2str(num_session);
+    num_session_str = num2str(num_session);
 end
 
 %set up variables for acquiring data
