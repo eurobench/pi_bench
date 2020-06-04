@@ -22,7 +22,7 @@ close all
 subject = 2;
 % TYPE IN DURATION  YOU WANT TO RECEIVE DATA FROM
 global duration
-duration = 5; 
+duration = 10; 
 %% Initiation process
 
 global reached 
@@ -105,7 +105,7 @@ if (streaming == 2 || (active == 0))
     if num_session < 10
         num_session_str = append('0', num2str(num_session));
     else
-        num_str = num2str(num_session);
+        num_session_str = num2str(num_session);
     end
 
     filename_ar1 = append(subject_str, '_ar1_', num_session_str, '.csv');

@@ -1,6 +1,6 @@
 function ROS_publish(data, publisher_node, msg)
 %ROS_PUBLISH publishes data via ROS in the Wrench Stamped format 
-%INPUT: - data: data dthat needs to be send
+%INPUT: - data: data that needs to be send
 %       - publisher node: node which is publishing the ros messages
 %       - msg: messages format
 for a = 1:size(data,1)

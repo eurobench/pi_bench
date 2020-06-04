@@ -82,7 +82,7 @@ end
 % builds a signals sub-field within the field UserData of the current NI session.
 
 s.UserData.signals = [];
-s.UserData.frames = frame;
+%s.UserData.frames = frame;
 
 % a listener with a callback function to addUserData is used to append the data to the 
 % structure s.UserData.signals each time data is available in the NI data

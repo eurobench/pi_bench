@@ -12,7 +12,7 @@
 %        enter the needed values in the section ENTER VALUES then run script;
 %        if the acqusition should have a special duration, set iscont = 0,
 %        type in duration and run the script;
-%        if the acqusition should be conitnous, set iscont = 1 and run the script; 
+%        if the acqusition should be continous, set iscont = 1 and run the script; 
 %        to stop the acquisition type any button while having the figure
 %        opened;
 %        to close ROS node, type rosshutdown;
@@ -24,8 +24,8 @@ close all
 % ENTER SUBJECT NUMBER HERE
 subject = 2;
 % ENTER WHETHER RECORDING IS CONTINOUS OR TAKES A SPECIAL DURATION
-iscont = 0;
-duration =  5; %not necessary to be typed in when acquisition is continous
+iscont = 1;
+duration =  10; %not necessary to be typed in when acquisition is continous
 %% Initiation process
 % sessions are counted after starting matlab
 if exist('num_session', 'var')
@@ -49,7 +49,7 @@ end
 
 %set up variables for acquiring data
 devicename = 'Dev2'; % Dev1 real device, Dev2 simulated device
-channels = (1:12); % when measuring 2 AR, 2 FP
+channels = (1:12); % when measuring 2 AR, with FP more channels needed
 fsamp = 2000;
 range = [-10,10];
 filename = append(subject_str, '_chair_raw_', num_session_str, '.csv');
