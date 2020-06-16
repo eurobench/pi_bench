@@ -1,0 +1,56 @@
+-----------------------------------------------------------------------------------------------------------------------------------
+function [start,stop] = segmentation(platform1, platform2)
+%provides the start and stopping frame of the current session
+%input data are the forces from the plates
+%the output are the starting and stopping frame of the current session
+
+Identifies the starting frame at least 10s before the first functional movement on the chair (to guarantee the calculation of sit stability). The first functional movement is identified based on a significant deflection from the baseline, by using the platform on the seat
+Identifies the stopping frame at least 10s after the last functional movement on the chair (to guarantee the calculation of the stand stability). The last functional movement is identified based on a standing force plateau on the feet platform. 
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+function [sit_stability, stand_stability] = stability(platform1, platform2,start,stop)
+%provides the sitting and standing stability values
+%input data are the forces from the plates and the start/stop frames from the segmentation function
+%the outputs are the sit and stand stability values
+
+Implementation: seat stability is the distance traveled by the CoP on a 10s period after start, (normalized by the subject’s height?). Stand stability is the same, in standing position, before stop.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+function [joint_angles] = kinematics(IMUs/markers,start,stop)
+%calculates joint kinematics. Joint angles is a matrix containing the ankle plantar-flexion angle, knee flexion-extension angle, hip flexion extension angle, and trunk angle
+%input data are the signals from accelerometers and gyros (or the markers trajectories in case of stereophotogrammetric measurement), together with the start and stop frames of the trial
+Implementation: gyro integration strategy +  correction. 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+function [subphases] = segment_STS(start,stop,joint_angles,platforms)
+%determines the single subphases of the sts task starting from the force platforms signals and IMU measurements, and based on Carhuters et al. (from Shekeman et al 1990). Subphases is a 4byN matrix, in which 4 are the starting frames of each subphases (events), and N is the number of identified repetitions in the trial
+Implementation: four events need to be determined
+1: t0: in each sts cycle, the start can be determined by the seat platform COP, or by the initial trunk bending
+2: lift-off: easily detected when the COP vertical force of the seat platform goes to 0
+3: maximum ankle dorsiflexion: corresponds to the point at which the shank bends over the foot, generating a maximum ankle dorsiflexion. Needs the previous calculation of the kinematics
+4: full hip extension: need the previous calculation of the kinematics. When the hip is fully extended, the sit-to-stand cycle ends. A subsequent beginning of the hip flexion identifies the beginning of the stand-to-sit cycle
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+ function [time] = sts_duration(start,stop,subphases)
+%determines the duration for the 5STS protocol
+Starting from the identified subphases, calculates the time elapsed between the t0 of the first sit-to-stand and the end of the 5th stand-to-seat (technically this should correspond, in 5sts literature, to the buttocks contact with the chair, and not the complete seat stabilization)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+Function [number_of_sts] = sts_counter(initial_frame, last_frame, subphases)
+%counts the number of completed sts cycles between the two input frames. In the case of the 30s STS, only the initial_frame is needed, and it correspond to the “go” signal. Last frame will be initial_frame+30s
+Implementation: simply counts the number of completed cycles.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+function [load_transf] = load_transfer(input)
+-----------------------------------------------------------------------------------------------------------------------------------
+function [os] = overshoot(input)
+-----------------------------------------------------------------------------------------------------------------------------------
+function [joint_moments] = inverse_dynamics(IMU, kinematics,Platforms, start, stop)
+-----------------------------------------------------------------------------------------------------------------------------------
+function [time_br] = backrest(start, stop, back_sensor)
+
+
+
