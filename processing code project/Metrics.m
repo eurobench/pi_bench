@@ -1,48 +1,13 @@
-% -----------------------------------------------------------------------------------------------------------------------------------
-%In this file, FP1 is the one on the ground!
+%In this file, FP1 is the one on the ground, anteroposterior is X,
+%mediolateral is Y - please check
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %preliminary declarations
 Fs = 100; %Sampling freuquency %check if the assumption is correct and/or if we can read it from the file
 
-%--------------------------------------------------------------------------
-%read data files
-function [anthropometrics] = read_anthropometrics(subject_file) %how is the anthropometrics data arranged?
-%read the anthropometric features of the subject from the record file where
-%they are stored. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-anthropometrics = [];
-fprintf('we need to read anthropometric data, but the fucntion is not ready yet!');
-%what is the format of anthropometric data?
-end
-
-
-function [FP1, FP2, handrail_L, handrail_R,back_sensor, accel] = read_sensor_data(data_file) %how is the sensor data arranged?
-%Preliminary indexing
-ind_plate_1 = 1:6;
-ind_plate_2 = 7:13;
-ind_handrail_L = 14; %made up
-ind_handrail_L = 15; %made up
-
-ind_back  = 51; %MADE UP!!!
-ind_acc = 20:40; %MADE UP!!!!
-
-%load .CSV
-temp_data = importdataI(data_file);
-
-%parse data
-FP1 = temp_data(:,ind_plate_1);
-FP2= temp_data(:,ind_plate_2);
-handrail_L  = temp_data(:,ind_handrail_L);
-handrail_R  = temp_data(:,ind_handrail_R);
-back_sensor = temp_data(:, ind_back);
-accel = temp_data(:,ind_acc);
-end
-
-
-
-
-function [start,stop] = segmentation(FP1, FP2,duration, Fs) %incomplete
+function [start,stop] = identify_start_stop(FP1, FP2,duration, Fs) %INCOMPLETE
 %provides the start and stopping frame of the current session
 %input data are the forces from the plates
 %the output are the starting and stopping frame of the current session
@@ -75,7 +40,8 @@ function [joint_angles] = kinematics(IMUs_markers, start,stop) %to be done
 joint_angles = [];
 fprintf('The subphases have not been computed yet')
 
-%!!!!!!!!!!!!!!!!!!! Do we need anthropometrics, here?!!!!!!!!!!!!!!!!!!!!
+% Do we need anthropometrics, here?
+
 %calculates joint kinematics. Joint angles is a matrix containing the ankle plantar-flexion angle, knee flexion-extension angle, hip flexion extension angle, and trunk angle
 %input data are the signals from accelerometers and gyros (or the markers trajectories in case of stereophotogrammetric measurement), together with the start and stop frames of the trial
 %Implementation: gyro integration strategy +  correction. 
@@ -116,7 +82,7 @@ fprintf('This function computes the load transfer and is not implemented yet')
 
 end
 % -----------------------------------------------------------------------------------------------------------------------------------
- function [os] = overshoot(AP, start_ind, CoPx) %to be tested
+ function [os] = overshoot(AP, start_ind, CoPx) %DONE - to be tested
  %definition: the overshoot is defined as the distance travelled by the
  %CoP after it has passed the vertical stance, and until it starts coming back
  %to the vertical stance
@@ -142,10 +108,10 @@ end
  fprintf('This function computes the overshoot and is not implemented yet')
  end
 % -----------------------------------------------------------------------------------------------------------------------------------
- function [joint_moments] = inverse_dynamics(IMU, kinematics,FPs, start, stop)
+ function [joint_moments] = inverse_dynamics(IMU, kinematics,FPs, start, stop) %To be done
  end
 % -----------------------------------------------------------------------------------------------------------------------------------
-function time_br = compute_backrest(start, stop, back_sensor, Fs)
+function time_br = compute_backrest(start, stop, back_sensor, Fs) %DONE - to be tested
 %the signal from the back rest sensor is supposed to be 0 when there is no
 %contact, 1 when there is contact. 
     temp = back_sensor(start:stop); %segment the data
@@ -154,7 +120,37 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%% ACCESSORY FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+%read data files
+function [anthropometrics] = read_anthropometrics(subject_file) %how is the anthropometrics data arranged?
+%read the anthropometric features of the subject from the record file where
+%they are stored. 
+
+anthropometrics = [];
+fprintf('we need to read anthropometric data, but the fucntion is not ready yet!');
+%what is the format of anthropometric data?
+end
+
+
+function [FP1, FP2, handrail_L, handrail_R,back_sensor, accel] = read_sensor_data(data_file) %how is the sensor data arranged?
+%Preliminary indexing
+ind_plate_1 = 1:6; ind_plate_2 = 7:13; 
+ind_handrail_L = 14; %made up
+ind_handrail_R = 15; %made up
+ind_back  = 51; %MADE UP!!!
+ind_acc = 20:40; %MADE UP!!!!
+
+%load .CSV
+temp_data = importdataI(data_file);
+
+%parse data
+FP1 = temp_data(:,ind_plate_1);
+FP2= temp_data(:,ind_plate_2);
+handrail_L  = temp_data(:,ind_handrail_L);
+handrail_R  = temp_data(:,ind_handrail_R);
+back_sensor = temp_data(:, ind_back);
+accel = temp_data(:,ind_acc);
+end
+
 function CoP_coords = compute_CoP(FP) %UPDATE FORMULA
 %calculate the CoP coordinates for a single FP, each FP signal is expected 
 %to come in the format Fx Fy Fz, Mx My Mz (the order is assumed)
@@ -171,8 +167,7 @@ COPy = (Mx-Fy*dy)/Fz;
 CoP_coords = [COPx, COPy];
 end
 
-
-function [stability] = compute_stability(FP1, FP2,start,stop)
+function [stability] = compute_stability(FP1, FP2,start,stop) %To be done
 %provides the stability values. The same function is called once for each
 %subphases of each cycle.
 %input data are the forces from the plates and the start/stop frames from the segmentation function
