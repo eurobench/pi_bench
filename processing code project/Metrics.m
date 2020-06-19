@@ -3,7 +3,8 @@
 
 
 %preliminary declarations
-Fs = 100; %Sampling freuquency 
+Fs = 100; %Sampling freuquency %check if the assumption is correct and/or if we can read it from the file
+
 %--------------------------------------------------------------------------
 %read data files
 function [anthropometrics] = read_anthropometrics(subject_file) %how is the anthropometrics data arranged?
@@ -61,11 +62,6 @@ CoP_coords = mean(compute_CoP(FP1),compute_CoP(FP2)); %CHECK if the formula is c
 end
 %--------------------------------------------------------------------------------------------------------------------------------
 
-function [sit_stability, stand_stability] = stability(FP1, FP2,start,stop)
-%provides the sitting and standing stability values
-%input data are the forces from the plates and the start/stop frames from the segmentation function
-%the outputs are the sit and stand stability values
-end
 
 %Implementation: seat stability is the distance traveled by the CoP on a 10s period after start, (normalized by the subject's height?). Stand stability is the same, in standing position, before stop.
 
@@ -144,8 +140,15 @@ dx = 600; dy = 400; %flip if appropriate
 COPx = (My-Fx*dx)/Fz;
 COPy = (Mx-Fy*dy)/Fz;
 CoP_coords = [COPx, COPy];
+end
 
 
-
+function [stability] = compute_stability(FP1, FP2,start,stop)
+%provides the stability values. The same function is called once for each
+%subphases of each cycle.
+%input data are the forces from the plates and the start/stop frames from the segmentation function
+%the outputs are the sit and stand stability values
+stability = [];
+fprintf('The stability has not been computed yet')
 end
 
