@@ -7,7 +7,7 @@
 %   - 2 force plates (not added yet): 
 %           - topic FP1 and FP2
 %           - ROS message format: still needs to be defined
-%   Data is saved in seerate csv-files.
+%   Data is saved in seperate csv-files.
 %
 % GUIDE: type rosinit('<URI of the ROS Master>');
 %        type in the amount of time you want your measured data to have in ENTER VALUES;

@@ -8,14 +8,14 @@
 %           - ROS message format: still needs to be defined
 %   Raw data is saved in a csv file as well.
 %
-% GUIDE: type rosinit, which is making the publisher node the master node;
-%        enter the needed values in the section ENTER VALUES then run script;
+% GUIDE: type rosinit, which is making the publisher node the master node
+%        enter the needed values in the section ENTER VALUES then run script
 %        if the acqusition should have a special duration, set iscont = 0,
-%        type in duration and run the script;
-%        if the acqusition should be continous, set iscont = 1 and run the script; 
+%        type in duration and run the script
+%        if the acqusition should be continous, set iscont = 1 and run the script
 %        to stop the acquisition type any button while having the figure
-%        opened;
-%        to close ROS node, type rosshutdown;
+%        opened
+%        to close ROS node, type rosshutdown
 
 clearvars -except num_session 
 close all
