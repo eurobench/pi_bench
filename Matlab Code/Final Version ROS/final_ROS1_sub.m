@@ -95,6 +95,7 @@ if (streaming == 2 || (active == 0))
     clear AR2_sub
     
     num_session = data_m_ar1(1,1).Header.Seq;
+    disp(num_session)
     % create name of the file
     if subject < 10
         subject_str = append('subject_0', num2str(subject));
@@ -115,12 +116,14 @@ if (streaming == 2 || (active == 0))
     counter = 1;
     while exist(filename_ar1, 'file')==2
         filename_ar1 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
+        pause(0.5)
         counter = counter + 1;
     end
-
+    
+    
     counter = 1;
     while exist(filename_ar2, 'file')==2
-        filename_ar2 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_ar2 = append(subject_str, '_ar2_', num_session_str, '_0', num2str(counter), '.csv');
         counter = counter + 1;
     end
     
