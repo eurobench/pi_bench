@@ -7,7 +7,7 @@
 %   - 2 force plates (not added yet): 
 %           - topic FP1 and FP2
 %           - ROS message format: still needs to be defined
-%   Data is saved in seperate csv-files.
+%   Data is saved in seerate csv-files.
 %
 % GUIDE: type rosinit('<URI of the ROS Master>');
 %        type in the amount of time you want your measured data to have in ENTER VALUES;
@@ -19,10 +19,10 @@ close all
 
 %% ENTER VALUES
 % ENTER SUBJECT NUMBER HERE
-subject = 2;
+subject = 1;
 % TYPE IN DURATION  YOU WANT TO RECEIVE DATA FROM
 global duration
-duration = 10; 
+duration = 5; 
 %% Initiation process
 
 global reached 
@@ -120,7 +120,7 @@ if (streaming == 2 || (active == 0))
 
     counter = 1;
     while exist(filename_ar2, 'file')==2
-        filename_ar1 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_ar2 = append(subject_str, '_ar1_', num_session_str, '_0', num2str(counter), '.csv');
         counter = counter + 1;
     end
     
@@ -161,16 +161,19 @@ function saveAR1Message(~,msg)
     data_m_ar1(n) = [msg];
 %     data_m_ar1 = [data_m_ar1; msg];
     n = n + 1;
-   if data_m_ar1(1,1).Header.Stamp.Nsec < 500000
-       if (msg.Header.Stamp.Sec == (data_m_ar1(1,1).Header.Stamp.Sec + duration - 1)) && (msg.Header.Stamp.Nsec == data_m_ar1(1,1).Header.Stamp.Nsec + 999500000)
+    if data_m_ar1(1,1).Header.Stamp.Nsec < 10000000
+        if (msg.Header.Stamp.Sec == (data_m_ar1(1,1).Header.Stamp.Sec + duration - 1)) && (msg.Header.Stamp.Nsec == data_m_ar1(1,1).Header.Stamp.Nsec + 990000000)
             reached = 1;
-       end
-   else
-       if (msg.Header.Stamp.Sec == (data_m_ar1(1,1).Header.Stamp.Sec + duration)) && (msg.Header.Stamp.Nsec == data_m_ar1(1,1).Header.Stamp.Nsec - 500000)
+        end
+    else
+        if (msg.Header.Stamp.Sec == (data_m_ar1(1,1).Header.Stamp.Sec + duration)) && (msg.Header.Stamp.Nsec == data_m_ar1(1,1).Header.Stamp.Nsec - 10000000)
             reached = 1;
-       end
+        end
        
-   end
+    end
+    if data_m_ar1(1,1).Header.Stamp.Nsec == msg.Header.Stamp.Nsec
+       fprintf('%d seconds of data are collected.\n',msg.Header.Stamp.Sec)
+    end
 end
 
 
@@ -183,16 +186,16 @@ function saveAR2Message(~,msg)
     data_m_ar2(m) = [msg];
 %     data_m_ar2 = [data_m_ar2; msg];
     m = m + 1;
-   if data_m_ar2(1,1).Header.Stamp.Nsec < 500000
-       if (msg.Header.Stamp.Sec == (data_m_ar2(1,1).Header.Stamp.Sec + duration - 1)) && (msg.Header.Stamp.Nsec == data_m_ar2(1,1).Header.Stamp.Nsec + 999500000)
+    if data_m_ar2(1,1).Header.Stamp.Nsec < 10000000
+       if (msg.Header.Stamp.Sec == (data_m_ar2(1,1).Header.Stamp.Sec + duration - 1)) && (msg.Header.Stamp.Nsec == data_m_ar2(1,1).Header.Stamp.Nsec + 990000000)
             reached = 1;
        end
-   else
-       if (msg.Header.Stamp.Sec == (data_m_ar2(1,1).Header.Stamp.Sec + duration)) && (msg.Header.Stamp.Nsec == data_m_ar2(1,1).Header.Stamp.Nsec - 500000)
+    else
+       if (msg.Header.Stamp.Sec == (data_m_ar2(1,1).Header.Stamp.Sec + duration)) && (msg.Header.Stamp.Nsec == data_m_ar2(1,1).Header.Stamp.Nsec - 10000000)
             reached = 1;
        end
-       
-   end
+
+    end
    
 
 end
