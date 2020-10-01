@@ -155,29 +155,30 @@ function CoP_coords = compute_CoP(FP) %UPDATE FORMULA
 %calculate the CoP coordinates for a single FP, each FP signal is expected
 %to come in the format Fx Fy Fz, Mx My Mz (the order is assumed)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %Geometrical parameters
-    m_PlateA   =  0.164;    % [m]
-    m_PlateB   =  0.264;    % [m]
-    m_PlateZdX = -0.0225;   % [m]
-    m_PlateZdY = -0.0225;   % [m]
+_from BTS_
+     // forces and moment
+     Fx = Fx12 + Fx34;
+     Fy = Fy14 + Fy23;
+     Fz = Fz1 + Fz2 + Fz3 + Fz4;
+     Mx = m_PlateB * ( Fz1 + Fz2 - Fz3 - Fz4 );
+     My = m_PlateA * ( -Fz1 + Fz2 + Fz3 - Fz4 );
+     Mz = m_PlateB * ( -Fx12 + Fx34 ) + m_PlateA * (Fy14 - Fy23 );
 
-    %Forces and moment
-    Fx = Fx12 + Fx34;
-    Fy = Fy14 + Fy23;
-    Fz = Fz1 + Fz2 + Fz3 + Fz4;
-    Mx = m_PlateB * ( Fz1 + Fz2 - Fz3 - Fz4 );
-    My = m_PlateA * ( -Fz1 + Fz2 + Fz3 - Fz4 );
-    Mz = m_PlateB * ( -Fx12 + Fx34 ) + m_PlateA * (Fy14 - Fy23 );
+     x = ( Fx * m_PlateZdX - My ) / Fz; // CoP x
+     y = ( Fy * m_PlateZdY + Mx ) / Fz; // CoP y
+     T = Mz - x*Fy + y*Fx;              // Torque
 
-    x = ( Fx * m_PlateZdX - My ) / Fz; %CoP x
-    y = ( Fy * m_PlateZdY + Mx ) / Fz; % CoP y
-    T = Mz - x*Fy + y*Fx;              % Torque
+Dove i parametri geometrici sono:
 
+   m_PlateA   =  0.164f;    // [m]
+   m_PlateB   =  0.264f;    // [m]
+   m_PlateZdX = -0.0225f;   // [m]
+   m_PlateZdY = -0.0225f;   // [m]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    dx = 600; dy = 400; %flip if appropriate
-    COPx = (My-Fx*dx)/Fz;
-    COPy = (Mx-Fy*dy)/Fz;
-    CoP_coords = [COPx, COPy];
+dx = 600; dy = 400; %flip if appropriate
+COPx = (My-Fx*dx)/Fz;
+COPy = (Mx-Fy*dy)/Fz;
+CoP_coords = [COPx, COPy];
 end
 
 function [stability] = compute_stability(FP1, FP2,start,stop) %To be done
