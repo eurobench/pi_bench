@@ -1,4 +1,4 @@
-function duration_5sts = sts_duration_5sts(chair_data)
+function duration_5sts = sts_duration_5sts(chair_data, kinematics,fs)
 
 % duration_5sts = sts_duration_5sts(chair_data)
 %
@@ -15,3 +15,17 @@ function duration_5sts = sts_duration_5sts(chair_data)
 %
 %
 
+sts_init = find(kinematics(:,4)>5,1);
+
+%the task starts when the trunk bends 5° forward for the first time after the GO signal
+
+dcopx = abs(diff(chair_data(:,7)));
+dcopx = dcopx/max(dcopx);
+ 
+sts_end = find(dcopx>0.25,1,'last');
+
+%the task ends when the AP coordinate of the CoP substantially changes for
+%the last time, in correpondence of the 5th time the buttocks touches the
+%seat force plate
+
+duration_5sts = (sts_end - sts_init)/fs;
