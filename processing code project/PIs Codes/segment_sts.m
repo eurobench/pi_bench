@@ -19,10 +19,20 @@ function [subphases,points] = segment_sts(chair_data, kinematics, fs)
 %
 %INPUT:
 %
+%chair_data: is the matrix containing all the data from the BENCH chair
+%
+%kinematics: is the matrix containing the lower limb kinematics
+%
+%fs: is the sampling frequency in Hz
+%
 %
 %OUTPUT:
 %
+%subphases: is a 3 elements array containing the average duration (in seconds) of each
+%STS subphase
 %
+%points: is a 4-by-N matrix containing the 4 time points calculated from
+%each of the N sts repetititons (e.g. N = 5 in the 5STS protocol)
 
 
 [m,zvel_stand] = findpeaks(kinematics(:,3),'minpeakheight',40,'minpeakdistance',0.5*fs);

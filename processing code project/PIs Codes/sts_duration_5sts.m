@@ -5,15 +5,22 @@ function duration_5sts = sts_duration_5sts(chair_data, kinematics,fs)
 % PI2: 5sts duration - this function calculates the PI1: 5STS duration - it is calculated as
 % the time elapsed between the first movement after the GO signal and the 
 % fifth dynamic contact with the chair (thus excluding the initial static 
-% contact). Only the data coming from the force plates are used for 
+% contact). Data coming from the chiar and from the kinematics are used for 
 % calculating this PI.
 %
 %INPUT:
 %
+%chair_data: is the matrix containing all the data from the BENCH chair
+%
+%kinematics: is the matrix containing the lower limb kinematics
+%
+%fs: is the sampling frequency in Hz
+%
 %
 %OUTPUT:
 %
-%
+%duration_5sts: is the time elapsed between the start and the end of the
+%5STS protocol (in seconds)
 
 sts_init = find(kinematics(:,4)>5,1);
 
