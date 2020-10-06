@@ -1,4 +1,4 @@
-function ncycles = repetitions_30sSTS(chair_data, kinematics, fs)
+function ncycles = repetitions_30sSTS(kinematics, fs)
 
 %ncycles = repetitions_30sSTS(chair_data, imu_data)
 %
@@ -7,8 +7,6 @@ function ncycles = repetitions_30sSTS(chair_data, kinematics, fs)
 % the force plates are used for calculating this PI.
 %
 %INPUT:
-%
-%chair_data: is the matrix containing all the data from the BENCH chair
 %
 %kinematics: is the matrix containing the lower limb kinematics
 %

@@ -1,4 +1,4 @@
-function ncycles = repetitions_30sSTS(chair_data, kinematics, fs)
+function ncycles = repetitions_30sSTS(kinematics, fs)
 
 %ncycles = repetitions_30sSTS(chair_data, imu_data)
 %
@@ -34,6 +34,10 @@ sts_end = sts_init + round(30*fs);
 standings = zvel_stand(zvel_stand<sts_end);
 ncycles = length(standings);
 
-if (min(zvel_stand>sts_end)-sts_end) < (sts_end-standings
+if (min(zvel_stand>sts_end)-sts_end) < 3*(min(zvel_stand>sts_end)-standings(end))/4
+    
+    ncycles = ncycles+1;  %if the first stand after the sts_end is close enough to the sts_end, the last stand is counted
+    
+end
 
 
