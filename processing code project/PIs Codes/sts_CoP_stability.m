@@ -1,4 +1,4 @@
-function [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, sts_points, fs)
+function [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, sts_points)
 
 % [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, imu_data)
 %
@@ -14,7 +14,6 @@ function [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, sts_points, 
 %sts_points: is the second output of the segment_sts function, and contains
 %the samples for segmenting the different sts cycles
 %
-%fs: is the sampling frequency in Hz
 %
 %
 %
@@ -27,6 +26,7 @@ function [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, sts_points, 
 %medial-lateral direction
 
 t0 = sts_points(1,:);
+fhe = sts_points(4,:);
 
 CoP_seat = (chair_data(:,7:8));
 CoP_ground = (chair_data(:,15:16));
@@ -38,10 +38,10 @@ F_ground = sqrt(sum(chair_data(:,9:11).^2,2));
 
 CoP_avg = ((CoP_seat.*F_seat + CoP_ground.*F_ground)./(F_seat+F_ground))/2; %this is the average CoP coordinate across the 2 force plates
 
-for i = 1:length(t0)-1
+for i = 1:length(t0)
     
-   CoP_AP(i) = sum(abs(diff(CoP_avg(t0(i):t0(i+1),1))));
-   CoP_ML(i) = sum(abs(diff(CoP_avg(t0(i):t0(i+1),2))));
+   CoP_AP(i) = sum(abs(diff(CoP_avg(t0(i):fhe(i),1))));
+   CoP_ML(i) = sum(abs(diff(CoP_avg(t0(i):fhe(i),2))));
    
 end
 

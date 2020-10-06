@@ -35,11 +35,11 @@ function [ult_os,ult_time] = unidirectional_load_transfer(chair_data,quiet_stand
 %OUTPUT:
 %
 %ult_os: this is an two elements array containing the unidirectional load
-%transfer overshoot along the antero-posterior and medial-lateral
+%transfer overshoot (average across sts_cycles) along the antero-posterior and medial-lateral
 %directions, respectively
 %
-%ult_time: is the average time (across sts cycles) to transfer the load
-%on a single platform
+%ult_time: is the average time (across sts cycles) needed to reach the
+%ult_os conditions
 
 
 
