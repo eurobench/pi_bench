@@ -1,4 +1,4 @@
-function [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, sts_points)
+function [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, sts_points, fs)
 
 % [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, imu_data)
 %
@@ -11,10 +11,11 @@ function [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, sts_points)
 %
 %kinematics: is the matrix containing the lower limb kinematics
 %
-%fs: is the sampling frequency in Hz
-%
 %sts_points: is the second output of the segment_sts function, and contains
 %the samples for segmenting the different sts cycles
+%
+%fs: is the sampling frequency in Hz
+%
 %
 %
 %OUTPUT:
