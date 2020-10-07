@@ -1,4 +1,4 @@
-function [ult_os,ult_time] = unidirectional_load_transfer(chair_data,quiet_standing_data, sts_points, fs)
+function [ult_os,ult_time] = unidirectional_load_transfer(chair_data,quiet_standing_data, sts_points, kin, fs)
 
 % ult_time = time_needed_ult(chair_data,imu_data)
 % 
@@ -40,6 +40,7 @@ function [ult_os,ult_time] = unidirectional_load_transfer(chair_data,quiet_stand
 %ult_time: is the average time (across sts cycles) needed to reach the
 %ult_os conditions
 
+t0 = sts_points(1,:);
 fhe = sts_points(4,:);
 
 CoP_ground = (chair_data(:,15:16));
@@ -49,17 +50,12 @@ CoP_standing = mean(quiet_standing_data);
 
 for i = 1:length(fhe)
     
-    [os_AP(i),os_AP_t(i)] = max(CoP_ground(fhe(i)-round(0.2*fs):fhe(i)+round(0.2*fs),1));
-    [os_ML(i),os_ML_t(i)] = max(CoP_ground(fhe(i)-round(0.2*fs):fhe(i)+round(0.2*fs),2));
+    os_AP(i) = max(abs(CoP_ground(t0(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)))*sign(max(CoP_ground(t0(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)));
+    os_ML(i) = max(abs(CoP_ground(t0(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)))*sign(max(CoP_ground(t0(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)));
     
-    os_AP(i) = os_AP(i) - CoP_standing(1);
-    os_ML(i) = os_ML(i) - CoP_standing(2);
-    
-    os_AP_t(i) = (os_AP_t(i) + fhe(i))/fs;
-    os_ML_t(i) = (os_ML_t(i) + fhe(i))/fs;
-    
+    os_AP_t(i) = find(CoP_ground(t0(i):fhe(i)+round(0.2*fs),1)>CoP_standing(1),1);    
 end
 
-ult_os = mean([os_AP;os_ML],1);
-ult_time = mean([os_AP_t;os_ML_t],1);
+ult_os = mean([os_AP;os_ML],2);
+ult_time = mean([os_AP_t;os_ML_t],2);
     

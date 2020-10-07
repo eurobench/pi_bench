@@ -3,9 +3,9 @@ function [ult_os,ult_time] = unidirectional_load_transfer(chair_data,quiet_stand
 % ult_time = time_needed_ult(chair_data,imu_data)
 % 
 % PI4: Time needed for unidirectional load transfer – this PI is an two elements array
-% of scalars indicating the AP and ML unidirectional load transfer overshoot times, 
-% corresponding to the time at which the distance between the quiet standing CoP position 
-% and the local maxima of anteroposterior and medio-lateral CoP during sts transition are reached. 
+% of scalars indicating the AP and ML unidirectional load transfer times, 
+% corresponding to the time at which the quiet standing CoP position 
+% are reached in each dynamic transition. 
 % The data is averaged across 5 STS cycles. 
 % Data from both the Chair and lower limb kinematics are needed for calculating this PI.
 %
@@ -50,15 +50,11 @@ CoP_standing = mean(quiet_standing_data);
 
 for i = 1:length(fhe)
     
-    [os_AP(i),os_AP_t(i)] = max(CoP_ground(fhe(i)-round(0.2*fs):fhe(i)+round(0.2*fs),1));
-    [os_ML(i),os_ML_t(i)] = max(CoP_ground(fhe(i)-round(0.2*fs):fhe(i)+round(0.2*fs),2));
+    os_AP(i) = max(abs(CoP_ground(t0(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)))*sign(max(CoP_ground(t0(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)));
+    os_ML(i) = max(abs(CoP_ground(t0(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)))*sign(max(CoP_ground(t0(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)));
     
-    os_AP(i) = os_AP(i) - CoP_standing(1);
-    os_ML(i) = os_ML(i) - CoP_standing(2);
-    
-    os_AP_t(i) = (os_AP_t(i) + fhe(i) - t0(i))/fs;
-    os_ML_t(i) = (os_ML_t(i) + fhe(i) - t0(i))/fs;
-    
+    os_AP_t(i) = (find(CoP_ground(t0(i):fhe(i)+round(0.2*fs),1)<CoP_standing(1),1))/fs;    
+    os_ML_t(i) = (find(CoP_ground(t0(i):fhe(i)+round(0.2*fs),2)<CoP_standing(2),1))/fs;    
 end
 
 ult_os = mean([os_AP;os_ML],2);
