@@ -133,23 +133,24 @@ if (streaming == 2 || (active == 0))
     
     
     % preparing received data for saving it in a table
-    header_ar1 = [data_m_ar1(1:end).Header];
-    header_tbl_ar1 = ros1_header2table(header_ar1);
-    wrench_ar1 = [data_m_ar1(1:end).Wrench];
-    wrench_tbl_ar1 = ros1_wrench2table(wrench_ar1);
-    
-    header_ar2 = [data_m_ar2(1:end).Header];
-    header_tbl_ar2 = ros1_header2table(header_ar2);
-    wrench_ar2 = [data_m_ar2(1:end).Wrench];
-    wrench_tbl_ar2 = ros1_wrench2table(wrench_ar2);
-  
-    temp_table_ar1 = horzcat (header_tbl_ar1, wrench_tbl_ar1);
-    temp_table_ar2 = horzcat (header_tbl_ar2, wrench_tbl_ar2);
-    
-    % save tables as csv file
-    writetable(temp_table_ar1, filename_ar1, 'Delimiter',',')
-    writetable(temp_table_ar2, filename_ar2, 'Delimiter',',')
+%     header_ar1 = [data_m_ar1(1:end).Header];
+%     header_tbl_ar1 = ros1_header2table(header_ar1);
+%     wrench_ar1 = [data_m_ar1(1:end).Wrench];
+%     wrench_tbl_ar1 = ros1_wrench2table(wrench_ar1);
+%     
+%     header_ar2 = [data_m_ar2(1:end).Header];
+%     header_tbl_ar2 = ros1_header2table(header_ar2);
+%     wrench_ar2 = [data_m_ar2(1:end).Wrench];
+%     wrench_tbl_ar2 = ros1_wrench2table(wrench_ar2);
+%   
+%     temp_table_ar1 = horzcat (header_tbl_ar1, wrench_tbl_ar1);
+%     temp_table_ar2 = horzcat (header_tbl_ar2, wrench_tbl_ar2);
+%     
+%     % save tables as csv file
+%     writetable(temp_table_ar1, filename_ar1, 'Delimiter',',')
+%     writetable(temp_table_ar2, filename_ar2, 'Delimiter',',')
 
+    make_table_wrench
     disp('Data saved.')
     
     pause(0.5)
