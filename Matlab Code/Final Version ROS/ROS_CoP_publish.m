@@ -1,5 +1,5 @@
-function ROS_publish(data, publisher_node, msg, num_session)
-%ROS_PUBLISH publishes data via ROS in the Wrench Stamped format 
+function ROS_CoP_publish(data, publisher_node, msg, num_session)
+%ROS_COP_PUBLISH publishes data via ROS in the Point Stamped format for the CoP
 %INPUT: - data: data that needs to be send
 %       - publisher node: node which is publishing the ros messages
 %       - msg: messages format
@@ -19,14 +19,14 @@ for a = 1:size(data,1)
         msg.Header.Stamp.Sec = sec;
         msg.Header.Stamp.Nsec = nsec;
         
-        msg.Wrench.Force.X = data(a,2);
-        msg.Wrench.Force.Y = data(a,3);
-        msg.Wrench.Force.Z = data(a,4); 
-        msg.Wrench.Torque.X = data(a,5);
-        msg.Wrench.Torque.Y = data(a,6);
-        msg.Wrench.Torque.Z = data(a,7);
+        msg.Point.X = data(a,2);
+        msg.Point.Y = data(a,3);
+        msg.Point.Z = 0;
         
         send(publisher_node, msg)
         
+        
 end
+
+
 
