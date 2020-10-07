@@ -1,6 +1,6 @@
-function CoP_dist = sts_CoP_stability(chair_data, sts_points)
+function [CoP_dist = sts_CoP_stability(chair_data, sts_points)
 
-% CoP_dist = sts_CoP_stability(chair_data, imu_data)
+% [CoP_dist_AP, CoP_dist_ML] = sts_CoP_stability(chair_data, imu_data)
 %
 % PI3: STS CoP stability – this PI consists of a 2 elements array of scalars 
 % indicating the average distance travelled by the CoP both in AP and ML directions. 
@@ -9,7 +9,7 @@ function CoP_dist = sts_CoP_stability(chair_data, sts_points)
 %
 %INPUT:
 %
-%chair_data: is the matrix containing the force plates data
+%kinematics: is the matrix containing the lower limb kinematics
 %
 %sts_points: is the second output of the segment_sts function, and contains
 %the samples for segmenting the different sts cycles
@@ -45,8 +45,6 @@ end
 
 CoP_dist_AP = mean(CoP_AP);
 CoP_dist_ML = mean(CoP_ML);
-
-CoP_dist = [CoP_dist_AP;CoP_dist_ML];
 
 
 
