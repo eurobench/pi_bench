@@ -1,4 +1,4 @@
-function [pos,pos_corrected] = sts_CoM(pelvis_IMU,kinematics)
+function [pos,pos_corrected, vel_corrected, events] = sts_CoM(pelvis_IMU,kinematics)
 
 [m,zvel_stand] = findpeaks(kinematics(:,3),'minpeakheight',40,'minpeakdistance',0.5*128);
 
@@ -94,10 +94,10 @@ for i = 1:length(events)-1
 end
 
 
-vel_corrected = filtfilt(a,b,vel_corrected);
+vel_corr = filtfilt(a,b,vel_corrected);
 
 
-pos = cumtrapz(vel_corrected)/128;
+pos = cumtrapz(vel_corr)/128;
 
 
 

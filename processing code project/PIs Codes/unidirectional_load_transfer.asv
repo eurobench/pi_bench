@@ -40,7 +40,6 @@ function [ult_os,ult_time] = unidirectional_load_transfer(chair_data,quiet_stand
 %ult_time: is the average time (across sts cycles) needed to reach the
 %ult_os conditions
 
-t0 = sts_points(1,:);
 fhe = sts_points(4,:);
 
 CoP_ground = (chair_data(:,15:16));
@@ -56,11 +55,11 @@ for i = 1:length(fhe)
     os_AP(i) = os_AP(i) - CoP_standing(1);
     os_ML(i) = os_ML(i) - CoP_standing(2);
     
-    os_AP_t(i) = (os_AP_t(i) + fhe(i) - t0(i))/fs;
-    os_ML_t(i) = (os_ML_t(i) + fhe(i) - t0(i))/fs;
+    os_AP_t(i) = (os_AP_t(i) + fhe(i))/fs;
+    os_ML_t(i) = (os_ML_t(i) + fhe(i))/fs;
     
 end
 
-ult_os = mean([os_AP;os_ML],2);
-ult_time = mean([os_AP_t;os_ML_t],2);
+ult_os = mean([os_AP;os_ML],1);
+ult_time = mean([os_AP_t;os_ML_t],1);
     

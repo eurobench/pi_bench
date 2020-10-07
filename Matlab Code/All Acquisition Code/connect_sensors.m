@@ -44,3 +44,5 @@ end
 s.IsContinuous = 1;
 s.IsNotifyWhenDataAvailableExceedsAuto = 1;
 
+lh = addlistener(s,'DataAvailable',@(src,evt) addUserData(src,evt));
+
