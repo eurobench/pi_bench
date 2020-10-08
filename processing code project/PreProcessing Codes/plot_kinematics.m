@@ -14,3 +14,5 @@ for i = 1:length(t0)
     
 end
 
+plot(mean(kin_res,3))
+

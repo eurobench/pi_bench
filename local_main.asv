@@ -61,15 +61,13 @@ end
 
 %PI3: CoP stability
 
-CoP_dist = sts_CoP_stability(Synch_chair_data, sts_points);
+C
 
 %PI4 and PI5: unidirectional load transfer time and overshoot
 
 [ult_os,ult_time] = unidirectional_load_transfer(Synch_chair_data,Synch_chair_data_standing(:,15:16), sts_points, fsamp_sh);
 
 %PI6: kinematic repeatability
-
-kinematic_reg = kinematic_repeatability(Joint_angles, fsamp_sh);
 
         
         

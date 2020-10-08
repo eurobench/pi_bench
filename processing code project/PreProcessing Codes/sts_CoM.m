@@ -93,7 +93,8 @@ for i = 1:length(events)-1
     
 end
 
-
+vel_corrected = vel_corrected(:,[1 3 2]);
+vel_corrected(:,3) = -vel_corrected(:,3);
 vel_corr = filtfilt(a,b,vel_corrected);
 
 

@@ -40,12 +40,15 @@ function [subphases,points] = segment_sts(chair_data, kinematics, fs)
 %the zero velocity points in standing position correpsond to the maximum hip extension points
 
 init_seat = find(kinematics(:,4)>5,1); %this is the initial trunk bending
+end_seat_pot = find(flip(kinematics(:,4))>5,1);
+end_seat_pot = length(kinematics)-end_seat_pot;
 
 kk = -sum(abs(kinematics'));
 [m,zvel_seat] = findpeaks(kk','minpeakheight',-20,'minpeakdistance',0.5*fs);
 
 zvel_seat(zvel_seat<init_seat) = [];
 zvel_seat = [init_seat;zvel_seat];
+zvel_seat(zvel_seat>end_seat_pot) = [];
 
 %the zero velocity points in seated position correspond to those points in
 %which the sum of the absolute joint angles is mimimum
@@ -54,10 +57,10 @@ zvel_seat = [init_seat;zvel_seat];
 
 fz = chair_data(:,3)-min(chair_data(:,3));
 
-for i = 1:length(zvel_seat)-1
+for i = 1:length(zvel_seat)
     t0(i) = find(kinematics(zvel_seat(i):end,4)>5,1)+zvel_seat(i);
     lo(i) = find(fz(zvel_seat(i):end)<0.2,1)+zvel_seat(i);
-    mad(i) = find(kinematics(zvel_seat(i):round(zvel_seat(i)+0.7*fs),1) == max(kinematics(zvel_seat(i):round(zvel_seat(i)+0.7*fs),1)))+zvel_seat(i);
+    mad(i) = find(kinematics(lo(i):round(lo(i)+0.3*fs),1) == max(kinematics(lo(i):round(lo(i)+0.3*fs),1)))+lo(i);
     fhe(i) = zvel_stand(i);
 end
 
