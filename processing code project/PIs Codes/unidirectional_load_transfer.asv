@@ -42,7 +42,7 @@ function [ult_os,ult_time] = unidirectional_load_transfer(chair_data,quiet_stand
 
 t0 = sts_points(1,:);
 lo = sts_points(2,:);
-mad = sts_points(3,:);
+mad = sts_points(3,:)
 fhe = sts_points(4,:);
 
 CoP_ground = (chair_data(:,15:16));
@@ -52,20 +52,13 @@ CoP_standing = mean(quiet_standing_data);
 
 for i = 1:length(fhe)
     
-    %search for the maximum distance between ground CoP and standing CoP
-    %during the extension phase (i.e. after maximum ankle dorsiflexion)
+    os_AP(i) = max(abs(CoP_ground(lo(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)))*sign(max(CoP_ground(lo(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)));
+    os_ML(i) = max(abs(CoP_ground(lo(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)))*sign(max(CoP_ground(lo(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)));
     
-    os_AP(i) = max(abs(CoP_ground(mad(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)))*sign(max(CoP_ground(mad(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)));
-    os_ML(i) = max(abs(CoP_ground(mad(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)))*sign(max(CoP_ground(mad(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)));
-    
-    %load transfer time corresponds to the time point at which the ground
-    %CoP is the closest to the standing CoP
-    
-    tmp = sqrt((CoP_ground(mad(i):fhe(i)+round(0.2*fs),1)-CoP_standing(1)).^2 + (CoP_ground(mad(i):fhe(i)+round(0.2*fs),2)-CoP_standing(2)).^2);
-    [mm,loc_min] = min(tmp);
-    lt_time(i) = (loc_min+mad(i)-t0(i))/fs;
+    os_AP_t(i) = (find(CoP_ground(lo(i):fhe(i)+round(0.2*fs),1)<CoP_standing(1),1))/fs;    
+    os_ML_t(i) = (find(CoP_ground(lo(i):fhe(i)+round(0.2*fs),2)<CoP_standing(2),1))/fs;    
 end
 
 ult_os = mean([os_AP;os_ML],2);
-ult_time = mean(lt_time);
+ult_time = mean([os_AP_t;os_ML_t],2);
     
