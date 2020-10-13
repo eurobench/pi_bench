@@ -75,17 +75,13 @@ The Publisher needs to open the matlab file `AutomaticStop_ROS1_pub`  and follow
 	 ```
 
 ## Acknowledgements
-
-<a href="http://eurobench2020.eu">
-  <img src="http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png"
-       alt="rosin_logo" height="60" >
-</a>
+![Eurobench Logo](http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png)
+     
 
 Supported by Eurobench - the European robotic platform for bipedal locomotion benchmarking.
 More information: [Eurobench website][eurobench_website]
 
-<img src="http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png"
-     alt="eu_flag" width="100" align="left" >
+![EU Flag](http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png)
 
 This project has received funding from the European Union’s Horizon 2020
 research and innovation programme under grant agreement no. 779963.
