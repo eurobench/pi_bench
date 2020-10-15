@@ -7,12 +7,12 @@ There exists a publisher which is responsible for acquiring and sending the data
 
 Installation of the following Matlab Toolboxes is necessary:
 
--	Data Acquisition Toolbox
--	ROS Toolbox
++ Data Acquisition Toolbox
++ ROS Toolbox
 
 Installation of the following NI Software is necessary:
 
--	NI MAX App ([Link to Download])
++ NI MAX App ([Link to Download])
 
 [Link to Download]: https://www.ni.com/de-de/support/downloads/drivers/download.ni-daqmx.html#288283
 
@@ -22,57 +22,51 @@ There exists a publisher and a subscriber on two different machines.
 
 The Publisher needs to open the matlab file `AutomaticStop_ROS1_pub`  and follow these instructions:
 
--	create a Master ROS node:
++ create a Master ROS node:
 
-	 ```console
-	 rosinit
-	 ```
+			rosinit
 
--	enter the needed values in the section **ENTER VALUES**
 
-	 ```console
-	%% ENTER VALUES
-		% ENTER SUBJECT NUMBER HERE
-		subject = 1;
-		% ENTER WHETHER RECORDING IS CONTINOUS OR TAKES A SPECIAL DURATION
-		iscont = 0;
-		duration =  5;
-	 ```
++ enter the needed values in the section **ENTER VALUES**:
 
--	 if the acquisition should have a special duration, set `iscont = 0`, type in duration and run the script
--	 if the acquisition should be continous, set `iscont = 1` and run the script
--	 to stop the acquisition type any button while having the figure opened
--	 close the ROS node:
+			% ENTER SUBJECT NUMBER HERE
+			subject = 1;
+			% ENTER WHETHER RECORDING IS CONTINOUS OR TAKES A SPECIAL DURATION
+			iscont = 0;
+			duration =  5;
 
-	 ```console
-	 rosshutdown
-	 ```
++ if the acquisition should have a special duration, set `iscont = 0`, type in duration and run the script
+
++ if the acquisition should be continous, set `iscont = 1` and run the script
+
++ to stop the acquisition type any button while having the figure opened
+
++ close the ROS node:
+
+			rosshutdown
+
 
  The Subscriber needs to open the matlab file `final_ROS1_sub` and follow these instructions:
 
--	 connect to the ROS Master
++ connect to the ROS Master
 
-	 ```console
-	 rosinit('<URI of the ROS Master>')
-	 ```
+			rosinit('<URI of the ROS Master>')
 
-	-	 type in the amount of time you want your measured data to have in **ENTER VALUES**
 
- ```console
-	%%ENTER VALUES
-	% ENTER SUBJECT NUMBER HERE
-	subject = 1;
-	% TYPE IN DURATION  YOU WANT TO RECEIVE DATA FROM
-	global duration
-	duration = 5;
- ```
++ type in the amount of time you want your measured data to have in **ENTER VALUES**
 
--	 run script to start and stop streaming with the GUI
--	 close the ROS node:
+			% ENTER SUBJECT NUMBER HERE
+			subject = 1;
+			% TYPE IN DURATION  YOU WANT TO RECEIVE DATA FROM
+			global duration
+			duration = 5;
 
-	 ```console
-	 rosshutdown
-	 ```
+
++ run script to start and stop streaming with the GUI
+
++ close the ROS node:
+
+			rosshutdown
 
 ## Acknowledgements
 ![Eurobench Logo](http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png)
