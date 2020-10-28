@@ -21,9 +21,7 @@ close all
 %% ENTER VALUES
 % ENTER SUBJECT NUMBER HERE
 subject = 1;
-% ENTER WHETHER RECORDING IS CONTINOUS OR TAKES A SPECIAL DURATION
-iscont = 0;
-duration =  5; %not necessary to be typed in when acquisition is continous
+COMPORT = {'COM1', 'COM2'};
 %% Initiation process
 % sessions are counted after starting matlab
 if exist('num_session', 'var')
@@ -158,7 +156,14 @@ tbl = array2table(horzcat(timestamps', Synch_chair_data, Synch_shimmer_data{1, 1
 names = [{'time'}, chair_labels(:)', shimmer_labels_mod(:)'];
 tbl.Properties.VariableNames = string(names);
 
-writetable(tbl, filename, 'Delimiter',',')
+folder_raw = append(subject_str, '_raw');
+    
+if ~exist(folder_raw, 'dir')
+   mkdir(folder_raw)
+end
+    
+tbl_full_path  = fullfile( folder_raw , filename );
+writetable(tbl, tbl_full_path, 'Delimiter',',')
 
 disp('Raw data saved.')
 

@@ -1,0 +1,4 @@
+Raw data of the chair acquired by an AD-Converter running with a frequency of 100 Hz.
+ 1st column: time in seconds.
+ 2nd-7th column: force and torque armrail 1.
+ 8th-13th column: force and torque armrail 2

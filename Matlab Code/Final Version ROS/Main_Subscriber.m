@@ -9,11 +9,10 @@
 %   - 6 shimmer sensors
 %           - topic SH1-SH6
 %           - ROS message format: WrenchStamped
-%   Data is saved in seperate csv-files.
+%   Data is saved in seperate csv-files for each sensor.
 %
-% GUIDE: type in the amount of time you want your measured data to have in ENTER VALUES;
+% GUIDE: type in the subject number and the ROS URI of the master node or its IP address in ENTER VALUES;
 %        run script to start and stop streaming with the GUI
-%        to close ROS node type rosshutdown;
 
 clearvars 
 close all
@@ -21,10 +20,10 @@ close all
 %% ENTER VALUES
 % ENTER SUBJECT NUMBER HERE
 subject = 1;
-% TYPE IN DURATION  YOU WANT TO RECEIVE DATA FROM
-global duration
-duration = 5; 
-ip_master = '192.168.178.74';
+% TYPE IN IP ADRESS FOR THE MASTER NODE
+% ip_master = '192.168.178.74';
+ip_master = 'http://DESKTOP-35E4VDR:11311/';
+
 disp("Registering subscribers...")
 sub1 = ros.Node("Sub1", ip_master);
 sub2 = ros.Node("Sub2", ip_master);
@@ -39,9 +38,8 @@ sub10 = ros.Node("Sub10", ip_master);
 disp("Succesfully registered.")
 %% Initiation process
 global active
-global reached 
-reached = 0;
-% defining global counting variables for topics AR1 and AR2
+
+% defining global counting variables for all topics
 global a 
 global b
 global c
@@ -103,8 +101,6 @@ if streaming ==1
     
     
     % defining the arrays for saving incoming data
-    
-    
     data_m_fp1 = arrayfun(@(~) rosmessage('geometry_msgs/WrenchStamped'),zeros(1,2));
     data_m_fp2 = arrayfun(@(~) rosmessage('geometry_msgs/WrenchStamped'),zeros(1,2));
     data_m_CoP1 = arrayfun(@(~) rosmessage('geometry_msgs/PointStamped'),zeros(1,2));
@@ -133,14 +129,10 @@ if streaming ==1
     disp('Connection to publisher established.')
 end
 
-% helping variable active keeps script running while Callbacks are executed
+% keeps script running while Callbacks are executed
 while active == 1
-    start_n = a;
+%     start_n = a;
     pause(0.01) 
-    if reached
-        disp('The wished amount of data is received now.')
-        pause(2)
-    end
 end 
 
 % when stop button was pressed, data is saved --> streaming = 2, active = 0 
@@ -184,21 +176,40 @@ if (streaming == 2 || (active == 0))
         counter = counter + 1;
     end
     
+    % rename files if there already exists a session with identical name to
+    % prevent overwirting files
     
-    counter = 1;
-    while exist(filename_fp2, 'file')==2
+    if counter > 1 
         filename_fp2 = append(subject_str, '_fp2_', num_session_str, '_0', num2str(counter), '.csv');
-        counter = counter + 1;
+        filename_CoP1 = append(subject_str, '_CoP1_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_CoP2 = append(subject_str, '_CoP2_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_sh1 = append(subject_str, '_sh1_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_sh2 = append(subject_str, '_sh2_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_sh3 = append(subject_str, '_sh3_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_sh4 = append(subject_str, '_sh4_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_sh5 = append(subject_str, '_sh5_', num_session_str, '_0', num2str(counter), '.csv');
+        filename_sh6 = append(subject_str, '_sh6_', num_session_str, '_0', num2str(counter), '.csv');
+    end
+
+    % labels for table generation
+    labels_FP = {'F_x', 'F_y', 'F_z', 'M_x', 'M_y', 'M_z'};
+    labels_CoP = {'CoP_x','CoP_y'};
+    labels_SH = {'A_x', 'A_y', 'A_z', 'G_x', 'G_y', 'G_z'};
+    
+    folder_rec = append(subject_str, '_rec');
+    
+    if ~exist(folder_rec, 'dir')
+       mkdir(folder_rec)
     end
     
-    labels_FP = {'F_x', 'F_y', 'F_z', 'M_x', 'M_y', 'M_z'};
-    labels_SH = {'A_x', 'A_y', 'A_z', 'G_x', 'G_y', 'G_z'};
+    cd(folder_rec)
+    addpath ../
     
     % saving received data in table
     make_table_wrench(data_m_fp1,filename_fp1, labels_FP);
     make_table_wrench(data_m_fp2,filename_fp2, labels_FP);
-    make_table_point(data_m_CoP1,filename_CoP1);
-    make_table_point(data_m_CoP2,filename_CoP2);
+    make_table_point(data_m_CoP1,filename_CoP1, labels_CoP);
+    make_table_point(data_m_CoP2,filename_CoP2, labels_CoP);
     make_table_wrench(data_m_sh1,filename_sh1, labels_SH);
     make_table_wrench(data_m_sh2,filename_sh2, labels_SH);
     make_table_wrench(data_m_sh3,filename_sh3, labels_SH);
@@ -214,47 +225,20 @@ if (streaming == 2 || (active == 0))
 end
 
 
+%% Callback functions
 
 function saveFP1Message(~,msg)
-
     global data_m_fp1
     global a
-%     global duration
-%     global reached
     data_m_fp1(a) = [msg];
     a = a + 1;
-%     if data_m_fp1(1,1).Header.Stamp.Nsec < 10000000
-%         if (msg.Header.Stamp.Sec == (data_m_fp1(1,1).Header.Stamp.Sec + duration - 1)) && (msg.Header.Stamp.Nsec == data_m_fp1(1,1).Header.Stamp.Nsec + 990000000)
-%             reached = 1;
-%         end
-%     else
-%         if (msg.Header.Stamp.Sec == (data_m_fp1(1,1).Header.Stamp.Sec + duration)) && (msg.Header.Stamp.Nsec == data_m_fp1(1,1).Header.Stamp.Nsec - 10000000)
-%             reached = 1;
-%         end
-%        
-%     end
 end
 
-
 function saveFP2Message(~,msg)
-
     global data_m_fp2
     global b  
-%     global duration
-%     global reached
     data_m_fp2(b) = [msg];
-    b = b + 1;
-%     if data_m_fp2(1,1).Header.Stamp.Nsec < 10000000
-%        if (msg.Header.Stamp.Sec == (data_m_fp2(1,1).Header.Stamp.Sec + duration - 1)) && (msg.Header.Stamp.Nsec == data_m_fp2(1,1).Header.Stamp.Nsec + 990000000)
-%             reached = 1;
-%        end
-%     else
-%        if (msg.Header.Stamp.Sec == (data_m_fp2(1,1).Header.Stamp.Sec + duration)) && (msg.Header.Stamp.Nsec == data_m_fp2(1,1).Header.Stamp.Nsec - 10000000)
-%             reached = 1;
-%        end
-% 
-%     end
-   
+    b = b + 1;  
 end
 
 function saveCoP1Message(~,msg)
@@ -263,6 +247,7 @@ function saveCoP1Message(~,msg)
     data_m_CoP1(c) = [msg];
     c =c+1;
 end 
+
 function saveCoP2Message(~,msg)
     global data_m_CoP2
     global d  
@@ -276,38 +261,42 @@ function saveSH1Message(~,msg)
     data_m_sh1(e) = [msg];
     e = e+1;
 end
+
 function saveSH2Message(~,msg)
     global data_m_sh2
     global f  
     data_m_sh2(f) = [msg];
     f = f+1;
 end
+
 function saveSH3Message(~,msg)
     global data_m_sh3
     global g  
     data_m_sh3(g) = [msg];
     g = g+1;
 end
+
 function saveSH4Message(~,msg)
     global data_m_sh4
     global h  
     data_m_sh4(h) = [msg];
     h = h+1;
 end
+
 function saveSH5Message(~,msg)
     global data_m_sh5
     global i  
     data_m_sh5(i) = [msg];
     i = i+1;
 end
+
 function saveSH6Message(~,msg)
     global data_m_sh6
     global j  
     data_m_sh6(j) = [msg];
     j = j+1;
     if (abs(data_m_sh6(1,1).Header.Stamp.Nsec - msg.Header.Stamp.Nsec) < 10000000)
-       fprintf('%d seconds of data are collected.\n',msg.Header.Stamp.Sec)
+       fprintf('%d seconds of the last incoming data are collected.\n',msg.Header.Stamp.Sec)
     end
-    disp(msg)
 end
     
