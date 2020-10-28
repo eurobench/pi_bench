@@ -20,7 +20,7 @@ Installation of the following NI Software is necessary:
 
 There exists a publisher and a subscriber on two different machines.
 
-The Publisher needs to open the matlab file `AutomaticStop_ROS1_pub`  and follow these instructions:
+The Publisher needs to open the matlab file `Main_Publisher`  and follow these instructions:
 
 + create a Master ROS node:
 
@@ -29,44 +29,40 @@ The Publisher needs to open the matlab file `AutomaticStop_ROS1_pub`  and follow
 
 + enter the needed values in the section **ENTER VALUES**:
 
+
 			% ENTER SUBJECT NUMBER HERE
 			subject = 1;
-			% ENTER WHETHER RECORDING IS CONTINOUS OR TAKES A SPECIAL DURATION
-			iscont = 0;
-			duration =  5;
+			COMPORT = {'COM1', 'COM2'};
 
-+ if the acquisition should have a special duration, set `iscont = 0`, type in duration and run the script
++ run the script
 
-+ if the acquisition should be continous, set `iscont = 1` and run the script
++ a figure will pop up indicating that the acquisition has started: to stop the acquisition type any button while having the figure opened
 
-+ to stop the acquisition type any button while having the figure opened
++ data will be sent and saved in an according folder named after the subject number
 
-+ close the ROS node:
++ after the script stopped running automatially, close the ROS node:
+
 
 			rosshutdown
 
 
- The Subscriber needs to open the matlab file `final_ROS1_sub` and follow these instructions:
+ The Subscriber needs to open the matlab file `Main_Subscriber` and follow these instructions:
 
-+ connect to the ROS Master
++ fill out the part **ENTER VALUES** with the subject number and the master's ip address or ROS URI of the master node to connect to the master
 
-			rosinit('<URI of the ROS Master>')
-
-
-+ type in the amount of time you want your measured data to have in **ENTER VALUES**
 
 			% ENTER SUBJECT NUMBER HERE
 			subject = 1;
-			% TYPE IN DURATION  YOU WANT TO RECEIVE DATA FROM
-			global duration
-			duration = 5;
+			% TYPE IN IP ADDRESS FOR THE MASTER NODE
+			ip_master = '192.168.1.1';
 
 
 + run script to start and stop streaming with the GUI
 
-+ close the ROS node:
++ received data will be automaticlly saved in an according folder named after the subject number
 
-			rosshutdown
+
+Detailed instructions can be found in a manual located in the folder named Matlab Code. 
 
 ## Acknowledgements
 ![Eurobench Logo](http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png)
