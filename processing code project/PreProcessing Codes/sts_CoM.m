@@ -22,12 +22,20 @@ for i = 1:3
     gg(:,i) = gg(:,i)-mean(gg(:,i));
 end
 
+% 
+% ang2_init = atan2(mean(aa(1:50,1)),sqrt(mean(aa(1:50,2)).^2+mean(aa(1:50,3)).^2));
+% ang3_init = atan2(mean(aa(1:50,2)),mean(aa(1:50,3)));
 
-ang2_init = atan2(mean(aa(1:10,1)),sqrt(mean(aa(1:10,1)).^2+mean(aa(1:10,1)).^2));
-ang3_init = atan2(mean(aa(1:10,3)),sqrt(mean(aa(1:10,1)).^2+mean(aa(1:10,2)).^2));
+% ang3_init = pi-acos(mean(aa(1:50,1))/sqrt(mean(aa(1:50,1)).^2+mean(aa(1:50,3)).^2));
+% ang2_init = pi/2-asin(sqrt(1-mean(aa(1:50,2)).^2));
+
+
+
 ang = (pi*cumtrapz(gg)/128)/180;
-ang(:,2) = ang(:,2) + ang2_init;
-ang(:,3) = ang(:,3) + ang3_init;
+% ang(:,2) = ang(:,2) + ang2_init;
+% ang(:,3) = ang(:,3) + ang3_init;
+% ang(:,1) = ang(:,1);
+% ang(:,1) = pi/2 - ang(:,1);
 
 
 
@@ -93,8 +101,9 @@ for i = 1:length(events)-1
     
 end
 
-vel_corrected = vel_corrected(:,[1 3 2]);
+% vel_corrected = vel_corrected(:,[1 3 2]);
 vel_corrected(:,3) = -vel_corrected(:,3);
+% vel_corrected(:,1) = -vel_corrected(:,1);
 vel_corr = filtfilt(a,b,vel_corrected);
 
 
