@@ -1,4 +1,4 @@
-function make_table_wrench(data, filename, labels)
+function table = make_table_wrench(data, filename, labels)
 %make_table_wrench: join header and residual wrench message in the table
 %while adding the correct labeling.
     header = [data(1:end).Header];

@@ -20,8 +20,7 @@ close all
 %% ENTER VALUES
 % ENTER SUBJECT NUMBER HERE
 subject = 1;
-% TYPE IN IP ADRESS FOR THE MASTER NODE
-% ip_master = '192.168.178.74';
+% TYPE IN IP ADDRESS FOR THE MASTER NODE
 ip_master = 'http://DESKTOP-35E4VDR:11311/';
 
 disp("Registering subscribers...")
@@ -38,6 +37,8 @@ sub10 = ros.Node("Sub10", ip_master);
 disp("Succesfully registered.")
 %% Initiation process
 global active
+% Buffer size can be adjusted if necessary
+buffer_size = 100;
 
 % defining global counting variables for all topics
 global a 
@@ -63,6 +64,8 @@ global data_m_sh3
 global data_m_sh4
 global data_m_sh5
 global data_m_sh6
+
+
 %% set up GUI for controlling the streaming process
  
 % variable streaming can be adjusted via GUI
@@ -88,16 +91,16 @@ end
 % after start button was pressed, data is streamed --> streaming = 1
 if streaming ==1 
     % defining subscribers to prefered topics
-    sub_FP_seat = ros.Subscriber(sub1, "/FP_seat", "geometry_msgs/WrenchStamped", "BufferSize", 100);
-    sub_FP_feet = ros.Subscriber(sub2, "/FP_feet", "geometry_msgs/WrenchStamped", "BufferSize", 100);
-    sub_CoP_seat = ros.Subscriber(sub3, "/CoP_seat", "geometry_msgs/PointStamped", "BufferSize", 100);
-    sub_CoP_feet = ros.Subscriber(sub4, "/CoP_feet", "geometry_msgs/PointStamped", "BufferSize", 100);
-    sub_SH1 = ros.Subscriber(sub5, "/SH1", "geometry_msgs/WrenchStamped", "BufferSize", 100);
-    sub_SH2 = ros.Subscriber(sub6, "/SH2", "geometry_msgs/WrenchStamped", "BufferSize", 100);
-    sub_SH3 = ros.Subscriber(sub7, "/SH3", "geometry_msgs/WrenchStamped", "BufferSize", 100);
-    sub_SH4 = ros.Subscriber(sub8, "/SH4", "geometry_msgs/WrenchStamped", "BufferSize", 100);
-    sub_SH5 = ros.Subscriber(sub9, "/SH5", "geometry_msgs/WrenchStamped", "BufferSize", 100);
-    sub_SH6 = ros.Subscriber(sub10, "/SH6", "geometry_msgs/WrenchStamped", "BufferSize", 100);
+    sub_FP_seat = ros.Subscriber(sub1, "/FP_seat", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
+    sub_FP_feet = ros.Subscriber(sub2, "/FP_feet", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
+    sub_CoP_seat = ros.Subscriber(sub3, "/CoP_seat", "geometry_msgs/PointStamped", "BufferSize", buffer_size);
+    sub_CoP_feet = ros.Subscriber(sub4, "/CoP_feet", "geometry_msgs/PointStamped", "BufferSize", buffer_size);
+    sub_SH1 = ros.Subscriber(sub5, "/SH1", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
+    sub_SH2 = ros.Subscriber(sub6, "/SH2", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
+    sub_SH3 = ros.Subscriber(sub7, "/SH3", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
+    sub_SH4 = ros.Subscriber(sub8, "/SH4", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
+    sub_SH5 = ros.Subscriber(sub9, "/SH5", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
+    sub_SH6 = ros.Subscriber(sub10, "/SH6", "geometry_msgs/WrenchStamped", "BufferSize", buffer_size);
     
     
     % defining the arrays for saving incoming data
@@ -197,26 +200,50 @@ if (streaming == 2 || (active == 0))
     labels_SH = {'A_x', 'A_y', 'A_z', 'G_x', 'G_y', 'G_z'};
     
     folder_rec = append(subject_str, '_rec');
+    folder_detail = 'Detailed Data';
     
     if ~exist(folder_rec, 'dir')
        mkdir(folder_rec)
-    end
-    
+    end 
     cd(folder_rec)
-    addpath ../
+    
+    if ~exist(folder_detail, 'dir')
+       mkdir(folder_detail)
+    end
+    cd(folder_detail)
+    addpath ../../
     
     % saving received data in table
-    make_table_wrench(data_m_fp1,filename_fp1, labels_FP);
-    make_table_wrench(data_m_fp2,filename_fp2, labels_FP);
-    make_table_point(data_m_CoP1,filename_CoP1, labels_CoP);
-    make_table_point(data_m_CoP2,filename_CoP2, labels_CoP);
-    make_table_wrench(data_m_sh1,filename_sh1, labels_SH);
-    make_table_wrench(data_m_sh2,filename_sh2, labels_SH);
-    make_table_wrench(data_m_sh3,filename_sh3, labels_SH);
-    make_table_wrench(data_m_sh4,filename_sh4, labels_SH);
-    make_table_wrench(data_m_sh5,filename_sh5, labels_SH);
-    make_table_wrench(data_m_sh6,filename_sh6, labels_SH);
+    t_fp1 = make_table_wrench(data_m_fp1,append('Detail_', filename_fp1), labels_FP);
+    t_fp2= make_table_wrench(data_m_fp2,append('Detail_', filename_fp2), labels_FP);
+    t_CoP1 = make_table_point(data_m_CoP1,append('Detail_', filename_CoP1), labels_CoP);
+    t_CoP2 = make_table_point(data_m_CoP2,append('Detail_', filename_CoP2), labels_CoP);
+    t_sh1 = make_table_wrench(data_m_sh1,append('Detail_', filename_sh1), labels_SH);
+    t_sh2 = make_table_wrench(data_m_sh2,append('Detail_', filename_sh2), labels_SH);
+    t_sh3 = make_table_wrench(data_m_sh3,append('Detail_', filename_sh3), labels_SH);
+    t_sh4 = make_table_wrench(data_m_sh4,append('Detail_', filename_sh4), labels_SH);
+    t_sh5 = make_table_wrench(data_m_sh5,append('Detail_', filename_sh5), labels_SH);
+    t_sh6 = make_table_wrench(data_m_sh6,append('Detail_', filename_sh6), labels_SH);
 
+    % convert data to alternative less detailed data fomat as expected 
+    % force plates: added CoP and FP in one table
+    cd ../    
+    disp('Conversion to final data structure.')
+    labels_fp_final = {'Sec', 'F_x', 'F_y', 'F_z', 'CoP_x', 'CoP_y' 'M_x', 'M_y', 'M_z'};
+    labels_sh_final = {'Sec', 'A_x', 'A_y', 'A_z', 'G_x', 'G_y', 'G_z'};
+
+    fp1_part = horzcat(t_fp1{:,4}, t_fp1{:,5}, t_fp1{:,6}, t_CoP1{:, 4},t_CoP1{:, 5}, t_fp1{:,7}, t_fp1{:,8}, t_fp1{:,9});
+    fp2_part = horzcat(t_fp2{:,4}, t_fp2{:,5}, t_fp2{:,6}, t_CoP2{:, 4},t_CoP2{:, 5}, t_fp2{:,7}, t_fp2{:,8}, t_fp2{:,9});
+    
+    make_final_data_structure(t_fp1, fp1_part, labels_fp_final, filename_fp1)
+    make_final_data_structure(t_fp2, fp2_part, labels_fp_final, filename_fp2)
+    make_final_data_structure(t_sh1, t_sh1{:, 4:9}, labels_sh_final, filename_sh1)
+    make_final_data_structure(t_sh2, t_sh2{:, 4:9}, labels_sh_final, filename_sh2)
+    make_final_data_structure(t_sh3, t_sh3{:, 4:9}, labels_sh_final, filename_sh3)
+    make_final_data_structure(t_sh4, t_sh4{:, 4:9}, labels_sh_final, filename_sh4)
+    make_final_data_structure(t_sh5, t_sh5{:, 4:9}, labels_sh_final, filename_sh5)
+    make_final_data_structure(t_sh6, t_sh6{:, 4:9}, labels_sh_final, filename_sh6)
+    
     disp('Data saved.')
     
     pause(0.5)
@@ -224,6 +251,7 @@ if (streaming == 2 || (active == 0))
     close all
 end
 
+cd ../
 
 %% Callback functions
 
@@ -232,6 +260,9 @@ function saveFP1Message(~,msg)
     global a
     data_m_fp1(a) = [msg];
     a = a + 1;
+    if (abs(data_m_fp1(1,1).Header.Stamp.Nsec - msg.Header.Stamp.Nsec) < 10000000)
+       fprintf('%d seconds of first incoming messages is received.\n',msg.Header.Stamp.Sec)
+    end
 end
 
 function saveFP2Message(~,msg)

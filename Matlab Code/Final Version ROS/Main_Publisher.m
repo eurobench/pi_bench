@@ -60,7 +60,7 @@ end
 
 %create txt file with all the information about raw data
 fileID = fopen('raw_data.txt','w');
-text = sprintf('Raw data of the chair acquired by an AD-Converter running with a frequency of %d Hz.\n 1st column: time in seconds.\n 2nd-7th column: force and torque armrail 1.\n 8th-13th column: force and torque armrail 2', fsamp_ni);
+text = sprintf('Raw data of the chair acquired by an AD-Converter running with a frequency of %d Hz and shimmer sensors with a frequency of %d Hz.\n 1st column: time in seconds.\n 2nd-7th column: force plate 1.\n 8th-9th column: centre of pressure 1.\n 10th-15th column: force plate 2.\n 16th-17th column: centre of pressure 2.\n 18th-53th column: shimmer sensors 1-6', fsamp_ni, fsamp_sh);
 fprintf(fileID,text);
 fclose(fileID);
 
