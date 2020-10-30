@@ -1,4 +1,4 @@
-function [pos,pos_corrected, vel_corrected, events] = sts_CoM(pelvis_IMU,kinematics)
+function [pos, vel_corrected, events] = sts_CoM(pelvis_IMU,kinematics)
 
 [m,zvel_stand] = findpeaks(kinematics(:,3),'minpeakheight',40,'minpeakdistance',0.5*128);
 
@@ -83,19 +83,19 @@ for i = 1:length(events)-1
     vel_corrected = [vel_corrected;vel_tmp];
     vel_tmp_correc = [vel_tmp_correc;vel_tmp];
     
-    if mod(i,2) == 1 && i>=3
-        
-        
-        for j = 1:3
-            
-            vel_tmp_correc(:,j) = vel_tmp_correc(:,j)-mean(vel_tmp_correc(:,j));
-            
-        end
-        
-        pos_corrected = [pos_corrected;cumtrapz(vel_tmp_correc)/128];
-        vel_tmp_correc = [];
-        
-    end
+%     if mod(i,2) == 1 && i>=3
+%         
+%         
+%         for j = 1:3
+%             
+%             vel_tmp_correc(:,j) = vel_tmp_correc(:,j)-mean(vel_tmp_correc(:,j));
+%             
+%         end
+%         
+%         pos_corrected = [pos_corrected;cumtrapz(vel_tmp_correc)/128];
+%         vel_tmp_correc = [];
+%         
+%     end
     
     
     
