@@ -26,7 +26,7 @@ function [Chair_data,data_sh] = synch_acq(sh,s)
 s.UserData.signals = [];
 
 cellfun(@(x) x.start,sh,'uniformoutput',false);
-pause(5);
+pause(15);
 
 
 s.startBackground;
@@ -50,7 +50,7 @@ cellfun(@(x) x.stop,sh,'uniformoutput',false);
 
 
 data_ni = s.UserData.signals;
-data_ni = data_ni(:,[1 2 3 8 7 9 6 10 5 4 13 16 15 17 14 18 13 12]);
+data_ni = data_ni(:,[1 2 3 8 7 9 6 10 5 4 11 16 15 17 14 18 13 12]);
 data1 = data_ni(:,3:10);
 data2 = data_ni(:,11:end);
 

@@ -37,3 +37,6 @@ for i = 1:length(imu_data)-1
    
     
 end
+
+j_kin(:,1) = -j_kin(:,1);
+j_kin(:,4) = -j_kin(:,4);
