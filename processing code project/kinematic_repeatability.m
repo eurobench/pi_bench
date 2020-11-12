@@ -27,8 +27,9 @@ for i = 1:4
     joint_angle = kinematics(:,i);
     Rxx = xcorr(joint_angle,'unbiased');
     Rxx = Rxx/max(Rxx);
-    [reg,locs] = findpeaks(Rxx,'minpeakdistance',round(fs*0.5));
+    [reg,locs] = findpeaks(Rxx-min(Rxx)+0.01,'minpeakdistance',round(fs*0.7));
     reg = reg(locs>length(Rxx)/2+2);
+    reg = reg+min(Rxx)-0.01;
     
     if i == 1 || i == 4
         kinematic_reg(i) = reg(2);

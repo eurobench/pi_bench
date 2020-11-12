@@ -1,4 +1,4 @@
-function [j_kin, kin_labels] = joint_kinematics(imu_data, calibration_params,fsamp)
+function [j_kin, kin_labels] = joint_kinematics(data, calibration_params,fsamp)
 
 
 %kin = joint_kinematics(imu_data, calibration_params)
@@ -29,6 +29,12 @@ function [j_kin, kin_labels] = joint_kinematics(imu_data, calibration_params,fsa
 
 kin_labels = {'Ankle_FE','Knee_FE','Hip_FE','Trunk_FE'};
 
+imu_data{1} = data(:,18:23);
+imu_data{2} = data(:,24:29);
+imu_data{3} = data(:,30:35);
+imu_data{4} = data(:,36:41);
+imu_data{5} = data(:,42:47);
+
 for i = 1:length(imu_data)-1
     
     tmp_mat = [imu_data{i}(:,4:6) imu_data{i+1}(:,4:6)]; %takes the gyro components of two adiacent segments
@@ -38,5 +44,16 @@ for i = 1:length(imu_data)-1
     
 end
 
+tmp = j_kin(:,1)./max(abs(j_kin(:,1)));
+[mm,loc] = findpeaks(tmp,'minpeakheight',0.4,'minpeakdistance',round(fsamp*0.1),'doublesided');
+
+if length(find(mm<0)) > length(find(mm>0))
 j_kin(:,1) = -j_kin(:,1);
-j_kin(:,4) = -j_kin(:,4);
+end
+
+for i = 2:4
+  if max(j_kin(:,i) < abs(min(j_kin(:,i))))
+    j_kin(:,i) = -j_kin(:,i);
+  end
+end
+

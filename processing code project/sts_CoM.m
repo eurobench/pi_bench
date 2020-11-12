@@ -1,12 +1,12 @@
-function [pos, vel_corrected, events] = sts_CoM(pelvis_IMU,kinematics)
+function [pos, vel_corrected, evt] = sts_CoM(pelvis_IMU,kinematics)
 
-[m,zvel_stand] = findpeaks(kinematics(:,3),'minpeakheight',40,'minpeakdistance',0.5*128);
+[m,zvel_stand] = findpeaks(kinematics(:,3)-min(kinematics(:,3))+0.01,'minpeakheight',40-min(kinematics(:,3))+0.01,'minpeakdistance',0.5*128);
 
 kk = -sum(kinematics');
 
 init_seat = min(find(kinematics(:,4)>5));
 
-[m,zvel_seat] = findpeaks(kk','minpeakheight',-20,'minpeakdistance',0.5*128);
+[m,zvel_seat] = findpeaks(kk'-min(kk)+0.01,'minpeakheight',-20-min(kk)+0.01,'minpeakdistance',0.5*128);
 
 zvel_seat(zvel_seat<init_seat) = [];
 
@@ -67,11 +67,11 @@ vel_corrected = [];
 pos_corrected = [];
 vel_tmp_correc = [];
 
-events = sort([zvel_seat;zvel_stand],'ascend');
+evt = sort([zvel_seat;zvel_stand],'ascend');
 
-for i = 1:length(events)-1
+for i = 1:length(evt)-1
     
-    vel_tmp = vel(events(i)+1:events(i+1),:);
+    vel_tmp = vel(evt(i)+1:evt(i+1),:);
     ramp1 = linspace(vel_tmp(1,1),vel_tmp(end,1),length(vel_tmp));
     ramp2 = linspace(vel_tmp(1,2),vel_tmp(end,2),length(vel_tmp));
     ramp3 = linspace(vel_tmp(1,3),vel_tmp(end,3),length(vel_tmp));
@@ -83,25 +83,12 @@ for i = 1:length(events)-1
     vel_corrected = [vel_corrected;vel_tmp];
     vel_tmp_correc = [vel_tmp_correc;vel_tmp];
     
-%     if mod(i,2) == 1 && i>=3
-%         
-%         
-%         for j = 1:3
-%             
-%             vel_tmp_correc(:,j) = vel_tmp_correc(:,j)-mean(vel_tmp_correc(:,j));
-%             
-%         end
-%         
-%         pos_corrected = [pos_corrected;cumtrapz(vel_tmp_correc)/128];
-%         vel_tmp_correc = [];
-%         
-%     end
     
     
     
 end
 
-% vel_corrected = vel_corrected(:,[1 3 2]);
+
 vel_corrected(:,3) = -vel_corrected(:,3);
 % vel_corrected(:,1) = -vel_corrected(:,1);
 vel_corr = filtfilt(a,b,vel_corrected);

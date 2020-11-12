@@ -1,4 +1,4 @@
-function [calibration_params, calibration_quality] = calibration(imu_calibration_data)
+function [calibration_params, calibration_quality] = calibration(data)
 
 %[calibration_params, calibration_quality] = calibration(imu_calibration_data)
 %
@@ -25,10 +25,16 @@ function [calibration_params, calibration_quality] = calibration(imu_calibration
 %principal components (sagittal plane) contains more than 90% of the gyro 
 %signals variability
 
+imu_calibration_data{1} = data(:,18:23);
+imu_calibration_data{2} = data(:,24:29);
+imu_calibration_data{3} = data(:,30:35);
+imu_calibration_data{4} = data(:,36:41);
+imu_calibration_data{5} = data(:,42:47);
+
 for i = 1:length(imu_calibration_data)-1
     
     tmp_mat = [imu_calibration_data{i}(:,4:6) imu_calibration_data{i+1}(:,4:6)];
-    [coef,score,latent] = pca(tmp_mat);
+    [coef,score,latent] = princomp(tmp_mat);
     q = cumsum(latent)/sum(latent);
     calibration_quality(i) = q(1);
     calibration_params(:,i) = coef(:,1);

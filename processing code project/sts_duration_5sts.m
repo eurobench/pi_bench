@@ -1,4 +1,4 @@
-function duration_5sts = sts_duration_5sts(chair_data, kinematics,fs)
+function duration_5sts = sts_duration_5sts(data, kinematics,fs)
 
 % duration_5sts = sts_duration_5sts(chair_data)
 %
@@ -26,7 +26,7 @@ sts_init = find(kinematics(:,4)>5,1);
 
 %the task starts when the trunk bends 5° forward for the first time after the GO signal
 
-dcopx = abs(diff(chair_data(:,7)));
+dcopx = abs(diff(data(:,14)));
 dcopx = dcopx/max(dcopx);
  
 sts_end = find(dcopx>0.25,1,'last');

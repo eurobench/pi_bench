@@ -1,4 +1,4 @@
-function [subphases,points] = segment_sts(chair_data, kinematics, fs)
+function [subphases,points] = segment_sts(data, kinematics, fs, plot_res)
 
 % PI2: STS subphases duration - this PI consists of a 3 elements array of scalars 
 % indicating the average duration of each STS subphase. Each subphase duration 
@@ -35,7 +35,7 @@ function [subphases,points] = segment_sts(chair_data, kinematics, fs)
 %each of the N sts repetititons (e.g. N = 5 in the 5STS protocol)
 
 
-[m,zvel_stand] = findpeaks(kinematics(:,3),'minpeakheight',40,'minpeakdistance',0.5*fs);
+[m,zvel_stand] = findpeaks(kinematics(:,3)-min(kinematics(:,3))+0.01,'minpeakheight',40+min(kinematics(:,3)+0.01),'minpeakdistance',0.5*fs);
 
 %the zero velocity points in standing position correpsond to the maximum hip extension points
 
@@ -44,7 +44,7 @@ end_seat_pot = find(flip(kinematics(:,4))>5,1);
 end_seat_pot = length(kinematics)-end_seat_pot;
 
 kk = -sum(abs(kinematics'));
-[m,zvel_seat] = findpeaks(kk','minpeakheight',-20,'minpeakdistance',0.5*fs);
+[m,zvel_seat] = findpeaks(kk'-min(kk)+0.01,'minpeakheight',-20-min(kk)+0.01,'minpeakdistance',0.5*fs);
 
 zvel_seat(zvel_seat<init_seat) = [];
 zvel_seat = [init_seat;zvel_seat];
@@ -55,7 +55,7 @@ zvel_seat(zvel_seat>end_seat_pot) = [];
 
 %the zvel_seat points are used to start the segmentation (excluding the last one)
 
-fz = chair_data(:,3)-min(chair_data(:,3));
+fz = data(:,4)-min(data(:,4));
 
 for i = 1:length(zvel_seat)
     t0(i) = find(kinematics(zvel_seat(i):end,4)>5,1)+zvel_seat(i);
@@ -71,3 +71,13 @@ points = [t0;lo;mad;fhe];
 subphases(1) = mean(lo-t0)/fs;
 subphases(2) = mean(mad-lo)/fs;
 subphases(3) = mean(fhe-mad)/fs;
+
+if plot_res == true
+  plot(kinematics);
+  hold on
+  plot(repmat(points(1,:),length([-100:200]),1),[-100:200],'k--')
+  plot(repmat(points(2,:),length([-100:200]),1),[-100:200],'b--')
+  plot(repmat(points(3,:),length([-100:200]),1),[-100:200],'r--')
+  plot(repmat(points(4,:),length([-100:200]),1),[-100:200],'m--')
+end
+
