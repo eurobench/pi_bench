@@ -1,0 +1,7 @@
+Raw data of the chair acquired by an AD-Converter running with a frequency of 128 Hz and shimmer sensors with a frequency of 128 Hz.
+ 1st column: time in seconds.
+ 2nd-7th column: force plate 1.
+ 8th-9th column: centre of pressure 1.
+ 10th-15th column: force plate 2.
+ 16th-17th column: centre of pressure 2.
+ 18th-53th column: shimmer sensors 1-6

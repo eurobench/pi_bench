@@ -79,5 +79,6 @@ if plot_res == true
   plot(repmat(points(2,:),length([-100:200]),1),[-100:200],'b--')
   plot(repmat(points(3,:),length([-100:200]),1),[-100:200],'r--')
   plot(repmat(points(4,:),length([-100:200]),1),[-100:200],'m--')
+  title('STS subphases');
 end
 

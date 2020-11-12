@@ -23,7 +23,7 @@ sts_end = sts_init + round(30*fs);
 %the task starts when the trunk bends 5° forward for the first time after the GO signal
 %the task ends after 30s
 
-[m,zvel_stand] = findpeaks(kinematics(:,3)-min(kinematics(:,3)+0.01),'minpeakheight',40-min(kinematics(:,3)+0.01),'minpeakdistance',0.5*fs);
+[m,zvel_stand] = findpeaks(kinematics(:,3)-min(kinematics(:,3))+0.01,'minpeakheight',40-min(kinematics(:,3))+0.01,'minpeakdistance',0.5*fs);
 
 %the zero velocity points in standing position correpsond to the maximum
 %hip extension points, and denotes the end of a sit-to-stand cycle. Each
