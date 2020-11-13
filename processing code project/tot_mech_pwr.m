@@ -24,5 +24,7 @@ F_ground = data(evt(1)+1:evt(end),8:10);
 F_tot = F_seat + F_ground;
 
 CoM_work = sum(vel.*F_tot);
+CoM_work = CoM_work([1 3]);
+
 
 
