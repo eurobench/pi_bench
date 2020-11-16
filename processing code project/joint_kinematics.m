@@ -47,7 +47,7 @@ j_kin(:,1) = -j_kin(:,1);
 end
 
 for i = 2:4
-  if max(j_kin(:,i) < abs(min(j_kin(:,i))))
+  if max(j_kin(:,i)) < abs(min(j_kin(:,i)))
     j_kin(:,i) = -j_kin(:,i);
   end
 end
