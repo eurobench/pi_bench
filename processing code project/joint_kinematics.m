@@ -40,9 +40,8 @@ for i = 1:length(imu_data)-1
 end
 
 tmp = j_kin(:,1)./max(abs(j_kin(:,1)));
-[mm,loc] = findpeaks(tmp,'minpeakheight',0.4,'minpeakdistance',round(fsamp*0.1),'doublesided');
 
-if length(find(mm<0)) > length(find(mm>0))
+if max(tmp) < abs(min(tmp))
 j_kin(:,1) = -j_kin(:,1);
 end
 
