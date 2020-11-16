@@ -63,8 +63,8 @@ fz = data(:,4)-min(data(:,4));
 for i = 1:length(zvel_seat)
     t0(i) = find(kinematics(zvel_seat(i):end,4)>5,1)+zvel_seat(i);
     lo(i) = find(fz(zvel_seat(i):end)<0.2,1)+zvel_seat(i);
-    mad(i) = find(kinematics(lo(i):round(lo(i)+0.3*fs),1) == max(kinematics(lo(i):round(lo(i)+0.3*fs),1)))+lo(i);
     fhe(i) = zvel_stand(i);
+    mad(i) = find(kinematics(lo(i):fhe(i),1) == max(kinematics(lo(i):fhe(i),1)))+lo(i);
 end
 
 t0(1) = zvel_seat(1);
