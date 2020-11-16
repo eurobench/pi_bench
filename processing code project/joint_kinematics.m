@@ -3,13 +3,9 @@ function [j_kin, kin_labels] = joint_kinematics(data, calibration_params,fsamp)
 
 %kin = joint_kinematics(imu_data, calibration_params)
 %
-%imu_data is the STS data obtained from the recording session. IMU signals
-%are organized in a cell array, each one containing signals from the j-th
-%segment (foot, shank, thigh, pelvis, trunk). Each cell contains singnals
-%from accelerometers and gyros in the following order: Ax, Ay, Az, Gx, Gy,
-%Gz
+%data is the STS data obtained from the recording session.
 %
-%calibration_params is the a cell array containing, in each cell, the
+%calibration_params is the a matrix containing, in each column, the
 %calibration vector related to the i-th joint for calulating the kinematics
 %in the sagittal plane (ankle, knee, hip, trunk). Each calibration vector
 %contains the coefficients of the first principal component obtained during
@@ -19,13 +15,12 @@ function [j_kin, kin_labels] = joint_kinematics(data, calibration_params,fsamp)
 %
 %fasmp is the imu sampling frequency in Hz
 %
-%kin is a Nx4 matrix containing joint kinematics data:
+%kin is a Nx4 matrix containing joint kinematics data (as indicated in the labels):
 %1-angle plantar and dorsal flexion
 %2-knee flexion/extension
 %3-hip flexion/extension
 %4-trunk flexion/extension
-%
-%Cristiano De Marchis, September 2020
+
 
 kin_labels = {'Ankle_FE','Knee_FE','Hip_FE','Trunk_FE'};
 

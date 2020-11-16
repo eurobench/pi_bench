@@ -1,6 +1,6 @@
 function CoP_dist = sts_CoP_stability(data, sts_points)
 
-% CoP_dist = sts_CoP_stability(chair_data, imu_data)
+% CoP_dist = sts_CoP_stability(data, sts_points)
 %
 % PI3: STS CoP stability – this PI consists of a 2 elements array of scalars 
 % indicating the average distance travelled by the CoP both in AP and ML directions. 
@@ -9,7 +9,7 @@ function CoP_dist = sts_CoP_stability(data, sts_points)
 %
 %INPUT:
 %
-%chair_data: is the matrix containing the force plates data
+%data: is the matrix containing the data recorded from the BENCH devce
 %
 %sts_points: is the second output of the segment_sts function, and contains
 %the samples for segmenting the different sts cycles

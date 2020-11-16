@@ -1,6 +1,6 @@
 function kinematic_reg = kinematic_repeatability(kinematics,fs)
 %
-% kinematics_CV = kinematic_repeatability(chair_data, imu_data)
+% kinematics_reg = kinematic_repeatability(kinematics,fs)
 %
 % PI6: kinematic repeatability – this PI is a four elements array of scalars
 % indicating the regularity of the ankle, knee, hip and trunk
@@ -13,7 +13,8 @@ function kinematic_reg = kinematic_repeatability(kinematics,fs)
 %
 %INPUT:
 %
-%kinematics: is the matrix containing the lower limb kinematics
+%kinematics: is the matrix containing the movement kinematics calculated through
+%the joint_kinematics.m function
 %
 %fs: is the sampling rate
 %

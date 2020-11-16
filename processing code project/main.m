@@ -1,4 +1,4 @@
-filename = 'subject_01_5sts_chair_raw_01.csv';
+filename = uigetfile('.csv');
 
 data = csvread(filename);
 data(1,:) = [];
@@ -12,9 +12,10 @@ pkg load statistics
 if length(strfind(filename,'calib')) > 0
   
   calibration_params = calibration(data);
-  calib_flag = 1;
+  disp('calibration parameters have been calculated, launch the main script and load a trial file');
+
   
-elseif length(strfind(filename,'5sts')) > 0 && calib_flag
+elseif length(strfind(filename,'5sts')) > 0 && exist('calibration_params')
   
   [kinematics, kin_labels] = joint_kinematics(data, calibration_params,fsamp);
   
@@ -116,7 +117,7 @@ elseif length(strfind(filename,'5sts')) > 0 && calib_flag
   xticklabels({'VT','AP'});
   
   
-elseif length(strfind(filename,'30sts')) > 0 && calib_flag
+elseif length(strfind(filename,'30sts')) > 0 && exist('calibration_params')
   
   [kinematics, kin_labels] = joint_kinematics(data, calibration_params,fsamp);
   
@@ -200,7 +201,7 @@ elseif length(strfind(filename,'30sts')) > 0 && calib_flag
   %PI6 - Kinematic repeatability
   
   figure(6);
-  bar(PI{6},'k','barwidth',0.3);set(gca,'FontSize',16);hold on;
+  barh(PI{6},'k','barwidth',0.3);set(gca,'FontSize',16);hold on;
   axis([0 1 0 5]);
   title('PI_6','FontSize',16);
   xlabel('Kinematic repeatability','FontSize',16)
@@ -219,7 +220,7 @@ elseif length(strfind(filename,'30sts')) > 0 && calib_flag
   
 else
   
-  disp('datafile or calibration data are missing');
+  disp('calibration data are missing');
   
 end
 

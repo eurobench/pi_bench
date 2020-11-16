@@ -19,11 +19,14 @@ function [subphases,points] = segment_sts(data, kinematics, fs, plot_res)
 %
 %INPUT:
 %
-%chair_data: is the matrix containing all the data from the BENCH chair
+%data: is the matrix containing all the data from the BENCH device
 %
-%kinematics: is the matrix containing the lower limb kinematics
+%kinematics: is the matrix containing the movement kinematics calculated through
+%the joint_kinematics.m function
 %
 %fs: is the sampling frequency in Hz
+%
+%plot_res: a boolean to plot the segmented results
 %
 %
 %OUTPUT:

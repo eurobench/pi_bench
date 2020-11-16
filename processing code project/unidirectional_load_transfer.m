@@ -1,28 +1,24 @@
 function [ult_os,ult_time] = unidirectional_load_transfer(data, sts_points, fs)
 
-% ult_time = time_needed_ult(chair_data,imu_data)
+% [ult_os, ult_time] = time_needed_ult(data,sts_points, fs)
 % 
-% PI4: Time needed for unidirectional load transfer – this PI is an two elements array
-% of scalars indicating the AP and ML unidirectional load transfer times, 
-% corresponding to the time at which the quiet standing CoP position 
-% are reached in each dynamic transition. 
-% The data is averaged across 5 STS cycles. 
-% Data from both the Chair and lower limb kinematics are needed for calculating this PI.
+% PI4: Time needed for unidirectional load transfer – this PI is scalar 
+% indicating the unidirectional load transfer time, 
+% corresponding to the time at which the average standing CoP position 
+% is reached in each dynamic transition. 
+% The data is averaged across STS cycles. 
 %
 % PI5: Unidirectional load transfer overshoot – this PI is an two elements 
 % array of scalars indicating the AP and ML unidirectional load transfer overshoot 
-% as the distance between the quiet standing CoP position and the local maxima 
+% as the distance between the average standing CoP position and the local maxima 
 % of anteroposterior and medio-lateral CoP during sts transition. 
-% The data is averaged across 5 STS cycles.
-% Data from both the Chair and lower limb kinematics are needed for calculating this PI. 
+% The data is averaged across STS cycles.
 %
 %
 %INPUT:
 %
-%chair_data: is the matrix containing all the data from the BENCH chair
+%data: is the matrix containing all the data from the BENCH chair
 %
-%quiet_standing_data: this is the CoP data recorded during the initial
-%standing
 %
 %
 %sts_points: is the second output of the segment_sts function, and contains
@@ -38,7 +34,7 @@ function [ult_os,ult_time] = unidirectional_load_transfer(data, sts_points, fs)
 %directions, respectively
 %
 %ult_time: is the average time (across sts cycles) needed to reach the
-%quiet standing CoP
+%average standing CoP position
 
 t0 = sts_points(1,:);
 lo = sts_points(2,:);

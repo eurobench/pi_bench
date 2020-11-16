@@ -1,6 +1,6 @@
 function ncycles = repetitions_30sSTS(kinematics, fs)
 
-%ncycles = repetitions_30sSTS(chair_data, imu_data)
+%ncycles = repetitions_30sSTS(kinematics, fs)
 %
 % PI1: 30sSTS duration - it is calculated as the number of full sit-to-stand 
 % cycles executed in the 30s after the GO signal. Only the data coming from 
@@ -8,7 +8,8 @@ function ncycles = repetitions_30sSTS(kinematics, fs)
 %
 %INPUT:
 %
-%kinematics: is the matrix containing the lower limb kinematics
+%kinematics: is the matrix containing the movement kinematics calculated through
+%the joint_kinematics.m function
 %
 %fs: is the sampling frequency in Hz
 %
