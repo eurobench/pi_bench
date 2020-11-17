@@ -65,6 +65,7 @@ for i = 1:length(zvel_seat)
     lo(i) = find(fz(zvel_seat(i):end)<0.2,1)+zvel_seat(i);
     fhe(i) = zvel_stand(i);
     mad(i) = find(kinematics(lo(i):fhe(i),1) == max(kinematics(lo(i):fhe(i),1)))+lo(i);
+    
 end
 
 t0(1) = zvel_seat(1);

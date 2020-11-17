@@ -61,7 +61,7 @@ elseif length(strfind(filename,'5sts')) > 0 && exist('calibration_params')
   ylabel('STS subphases duration (s)','FontSize',16)
   grid('on');
   xticklabels({'Phase1','Phase2', 'Phase3'});
-  subplot(2,1,2):pie(PI{2},{'Ph1-Forward Leaning','Ph2-Momentum Transfer','Ph3-Extension'});set(gca,'FontSize',16);
+  subplot(2,1,2):pie(PI{2}*10,{'Ph1-Forward Leaning','Ph2-Momentum Transfer','Ph3-Extension'});set(gca,'FontSize',16);
 
   
   %PI3 - STS CoP Stability
@@ -162,7 +162,7 @@ elseif length(strfind(filename,'30sts')) > 0 && exist('calibration_params')
   ylabel('STS subphases duration(s)','FontSize',16)
   grid('on');
   xticklabels({'Phase1','Phase2', 'Phase3'});
-  subplot(2,1,2):pie(PI{2},{'Ph1-Forward Leaning','Ph2-Momentum Transfer','Ph3-Extension'});set(gca,'FontSize',16);
+  subplot(2,1,2):pie(PI{2}*10,{'Ph1-Forward Leaning','Ph2-Momentum Transfer','Ph3-Extension'});set(gca,'FontSize',16);
  
   
   
