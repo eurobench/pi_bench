@@ -54,6 +54,7 @@ trigger_ni = chair_data(:,1)-mean(chair_data(:,1));
 trigger_ni = abs(trigger_ni)./max(abs(trigger_ni));
 trigger_sh = data_sh{end}(:,end-1)-mean(data_sh{end}(:,end-1));
 trigger_sh = abs(trigger_sh)./max(abs(trigger_sh));
+trigger_sh(find(trigger_sh>0.5)) = 0.5;
 
 init_ni = min(find(diff(trigger_ni)<-0.3));
 stop_ni = max(find(diff(trigger_ni)>0.3));
