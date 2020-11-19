@@ -38,7 +38,7 @@ function [subphases,points] = segment_sts(data, kinematics, fs, plot_res)
 %each of the N sts repetititons (e.g. N = 5 in the 5STS protocol)
 
 
-[m,zvel_stand] = findpeaks(kinematics(:,3)-min(kinematics(:,3))+0.01,'minpeakheight',40+min(kinematics(:,3)+0.01),'minpeakdistance',0.5*fs);
+[m,zvel_stand] = findpeaks(kinematics(:,3)-min(kinematics(:,3))+0.01,'minpeakheight',40-min(kinematics(:,3))+0.01,'minpeakdistance',0.5*fs);
 
 %the zero velocity points in standing position correpsond to the maximum hip extension points
 
