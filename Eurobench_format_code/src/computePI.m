@@ -17,8 +17,9 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 
     if isOctave
         disp('Using Octave')
+        pkg load io
         pkg load signal
-        pkg load mapping
+        # pkg load mapping
         pkg load statistics
     else
         disp('Using Matlab')
