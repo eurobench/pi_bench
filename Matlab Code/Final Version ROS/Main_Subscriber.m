@@ -227,24 +227,36 @@ if (streaming == 2 || (active == 0))
 
     % convert data to alternative less detailed data fomat as expected 
     % force plates: added CoP and FP in one table
-    cd ../    
-    disp('Conversion to final data structure.')
-    labels_fp_final = {'Sec', 'F_x', 'F_y', 'F_z', 'CoP_x', 'CoP_y' 'M_x', 'M_y', 'M_z'};
-    labels_sh_final = {'Sec', 'A_x', 'A_y', 'A_z', 'G_x', 'G_y', 'G_z'};
+    try
+        cd ../    
+        disp('Conversion to final data structure.')
+        labels_fp_final = {'Sec', 'F_x', 'F_y', 'F_z', 'CoP_x', 'CoP_y' 'M_x', 'M_y', 'M_z'};
+        labels_sh_final = {'Sec', 'A_x', 'A_y', 'A_z', 'G_x', 'G_y', 'G_z'};
 
-    fp1_part = horzcat(t_fp1{:,4}, t_fp1{:,5}, t_fp1{:,6}, t_CoP1{:, 4},t_CoP1{:, 5}, t_fp1{:,7}, t_fp1{:,8}, t_fp1{:,9});
-    fp2_part = horzcat(t_fp2{:,4}, t_fp2{:,5}, t_fp2{:,6}, t_CoP2{:, 4},t_CoP2{:, 5}, t_fp2{:,7}, t_fp2{:,8}, t_fp2{:,9});
-    
-    make_final_data_structure(t_fp1, fp1_part, labels_fp_final, filename_fp1)
-    make_final_data_structure(t_fp2, fp2_part, labels_fp_final, filename_fp2)
-    make_final_data_structure(t_sh1, t_sh1{:, 4:9}, labels_sh_final, filename_sh1)
-    make_final_data_structure(t_sh2, t_sh2{:, 4:9}, labels_sh_final, filename_sh2)
-    make_final_data_structure(t_sh3, t_sh3{:, 4:9}, labels_sh_final, filename_sh3)
-    make_final_data_structure(t_sh4, t_sh4{:, 4:9}, labels_sh_final, filename_sh4)
-    make_final_data_structure(t_sh5, t_sh5{:, 4:9}, labels_sh_final, filename_sh5)
-    make_final_data_structure(t_sh6, t_sh6{:, 4:9}, labels_sh_final, filename_sh6)
-    
-    disp('Data saved.')
+        fp1_part = horzcat(t_fp1{:,4}, t_fp1{:,5}, t_fp1{:,6}, t_CoP1{:, 4},t_CoP1{:, 5}, t_fp1{:,7}, t_fp1{:,8}, t_fp1{:,9});
+        fp2_part = horzcat(t_fp2{:,4}, t_fp2{:,5}, t_fp2{:,6}, t_CoP2{:, 4},t_CoP2{:, 5}, t_fp2{:,7}, t_fp2{:,8}, t_fp2{:,9});
+
+        make_final_data_structure(t_fp1, fp1_part, labels_fp_final, filename_fp1)
+        make_final_data_structure(t_fp2, fp2_part, labels_fp_final, filename_fp2)
+        make_final_data_structure(t_sh1, t_sh1{:, 4:9}, labels_sh_final, filename_sh1)
+        make_final_data_structure(t_sh2, t_sh2{:, 4:9}, labels_sh_final, filename_sh2)
+        make_final_data_structure(t_sh3, t_sh3{:, 4:9}, labels_sh_final, filename_sh3)
+        make_final_data_structure(t_sh4, t_sh4{:, 4:9}, labels_sh_final, filename_sh4)
+        make_final_data_structure(t_sh5, t_sh5{:, 4:9}, labels_sh_final, filename_sh5)
+        make_final_data_structure(t_sh6, t_sh6{:, 4:9}, labels_sh_final, filename_sh6)
+
+        disp('Data saved.')
+    catch
+        disp('Conversion to final data structure was not possible. Force plates and Centre of pressure are only saved in detailed version.')
+        make_final_data_structure(t_sh1, t_sh1{:, 4:9}, labels_sh_final, filename_sh1)
+        make_final_data_structure(t_sh2, t_sh2{:, 4:9}, labels_sh_final, filename_sh2)
+        make_final_data_structure(t_sh3, t_sh3{:, 4:9}, labels_sh_final, filename_sh3)
+        make_final_data_structure(t_sh4, t_sh4{:, 4:9}, labels_sh_final, filename_sh4)
+        make_final_data_structure(t_sh5, t_sh5{:, 4:9}, labels_sh_final, filename_sh5)
+        make_final_data_structure(t_sh6, t_sh6{:, 4:9}, labels_sh_final, filename_sh6)
+        
+        disp('Data saved.')
+    end
     
     pause(0.5)
 
