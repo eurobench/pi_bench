@@ -9,60 +9,59 @@ Installation of the following Matlab Toolboxes is necessary:
 
 + Data Acquisition Toolbox
 + ROS Toolbox
++ Shimmer Matlab instrument Driver
 
 Installation of the following NI Software is necessary:
 
-+ NI MAX App ([Link to Download])
++ [NI MAX App]
 
-[Link to Download]: https://www.ni.com/de-de/support/downloads/drivers/download.ni-daqmx.html#288283
+[NI MAX App]: https://www.ni.com/de-de/support/downloads/drivers/download.ni-daqmx.html#288283
+
+Installation of the following software is necessary for Shimmer calibration:
+
++ Consensys
++ Shimmer calibration software
+
+Installation of the following software is necessary for managing the communication between Shimmer sensors and Matlab:
+
++ [Realterm serial terminal]
+
+[Realterm serial terminal]:(https://sourceforge.net/projects/realterm/files/Realterm/2.0.0.57/) 
 
 ## Usage
 
 There exists a publisher and a subscriber on two different machines.
 
-The Publisher needs to open the matlab file `Main_Publisher`  and follow these instructions:
+The Publisher needs to open the matlab file Main_Publisher while the subscriber needs to open the matlab file Main_Subscriber . These instructions need to be followed to transmit the data :
 
-+ create a Master ROS node:
+1. Create the Master ROS node for the publisher with the script Main_Publisher. Type rosinit in the command line. The ROS master name which is displayed in the command window can be used later for connecting the subscriber to the ROS master.
 
-			rosinit
+	![Pic1](https://bitbucket.org/sophiaanais/benchproject_code/raw/master/Images/Bild1.png)
 
+2. Enter subject number into field ENTER VALUES. Moreover, add the com ports of the shimmer sensors as cells made from strings.
 
-+ enter the needed values in the section **ENTER VALUES**:
+	![Pic2](https://bitbucket.org/sophiaanais/benchproject_code/raw/master/Images/Bild2.PNG)
 
+3. For connecting the subscriber to the publisher open the script Main_Subscriber and enter the ip address or the name of the ROS master that was created above as a string into field **ENTER VALUES**. Further, add the subject number.
 
-			% ENTER SUBJECT NUMBER HERE
-			subject = 1;
-			COMPORT = {'COM1', 'COM2'};
+	![Pic3](https://bitbucket.org/sophiaanais/benchproject_code/raw/master/Images/Bild3.png)
 
-+ run the script
+4. Start running the script of the subscriber. This needs to be done before the data is published. A GUI will open.  Press the **Start Streaming** Button of the Subscriber. Do not close this window, it will be needed again!
 
-+ a figure will pop up indicating that the acquisition has started: to stop the acquisition type any button while having the figure opened
+	![Pic4](https://bitbucket.org/sophiaanais/benchproject_code/raw/master/Images/Bild4.png)
+	
+5. Then start running the script of the publisher for acquiring the necessary data. A figure window pops up as seen below. To stop the acquisition, click onto the window or push a key.
 
-+ data will be sent and saved in an according folder named after the subject number
+	![Pic5](https://bitbucket.org/sophiaanais/benchproject_code/raw/master/Images/Bild5.PNG)
 
-+ after the script stopped running automatially, close the ROS node:
+6. The figure is then closed, and the acquisition is stopped as well. The data will be sent automatically and is finally saved as raw data in a folder containing the subject number.
 
+	![Pic6](https://bitbucket.org/sophiaanais/benchproject_code/raw/master/Images/Bild6.PNG)
+	
+7. When successfully receiving the data, the subscriber gives information when reaching the last sensor by displaying how many seconds of data had been sent already. If no new seconds are added, everything is received, and the GUI can be used again to press **Stop Streaming**. The data is then saved in different files for each ROS topic in a folder with the subject number.
 
-			rosshutdown
+	![Pic7](https://bitbucket.org/sophiaanais/benchproject_code/raw/master/Images/Bild7.png)
 
-
- The Subscriber needs to open the matlab file `Main_Subscriber` and follow these instructions:
-
-+ fill out the part **ENTER VALUES** with the subject number and the master's ip address or ROS URI of the master node to connect to the master
-
-
-			% ENTER SUBJECT NUMBER HERE
-			subject = 1;
-			% TYPE IN IP ADDRESS FOR THE MASTER NODE
-			ip_master = '192.168.1.1';
-
-
-+ run script to start and stop streaming with the GUI
-
-+ received data will be automaticlly saved in an according folder named after the subject number
-
-
-Detailed instructions can be found in a manual located in the folder named Matlab Code. 
 
 ## Acknowledgements
 ![Eurobench Logo](http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png)
