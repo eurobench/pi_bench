@@ -25,7 +25,7 @@ jobs:
         # see https://yamllint.readthedocs.io/en/stable/configuration.html
         run: |
           success=0
-          for i in `find . -name "*.yaml" -type f`; do
+          for i in `find Eurobench_format_code -name "*.yaml" -type f`; do
             echo "Processing $i"
             yamllint -d relaxed $i
             res=$?
@@ -47,7 +47,7 @@ jobs:
       - name: csv linting
         run: |
           res=0
-          for i in `find . -name "*.csv" -type f`; do
+          for i in `find Eurobench_format_code -name "*.csv" -type f`; do
               echo "Processing $i"
               ./csvlint "$i"
               oneres=$?
