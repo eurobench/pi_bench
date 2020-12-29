@@ -1,13 +1,11 @@
-function PI = computePI(csv_data_file, csv_calib_file, result_dir)
+function PI = computePI_5sts(csv_data_file, csv_calib_file, result_dir)
   
-% compute_sts_PI.m
+% computeOI_5sts.m
 %
 % Given a csv file and anthropomorphic yml file, computes seven PI for the
-% assesment of sit-to-stand performance
+% assesment of sit-to-stand performance related to the 5sts protcol
 %
-%The input csv_data_file contains a string indicating the current protocol, that
-%can be either '5sts' or '30sts'. 
-%
+%The input csv_data_file contains the data from a single trial
 %The second csv input file is the one recored during the calibration
 %
 % The BENCH Team: Cristiano De Marchis, Leonardo Gizzi, Giacomo Severini
@@ -48,27 +46,15 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
     
     [filepath, filename, ext] = fileparts(csv_data_file);
     
-    if length(strfind(filename,'5sts')) > 0
-      protocol = true;
-    else
-      protocol = false;
-    end
+
+    protocol = true;
     
     
     %computes the PIs
     
     sts_metrics = calculate_sts_metrics(data, kinematics, fsamp, protocol);
-    
-    if protocol
       
     filename = strcat(result_dir, "/", "5STS_duration", ".yaml")
-    
-    else
-    
-    filename = strcat(result_dir, "/", "30sSTS_repetitions", ".yaml")
-    
-    end
- 
     store_vector(filename, sts_metrics{1});
 
     filename = strcat(result_dir, "/", "subphases_duration", ".yaml")
