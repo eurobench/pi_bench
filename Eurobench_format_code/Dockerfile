@@ -11,7 +11,7 @@ RUN wget -O signal-1.4.1.tar.gz https://octave.sourceforge.io/download.php?packa
     && wget -O io-2.4.12.tar.gz https://octave.sourceforge.io/download.php?package=io-2.4.12.tar.gz \
     && wget -O statistics-1.4.1.tar.gz https://octave.sourceforge.io/download.php?package=statistics-1.4.1.tar.gz
 
-ADD package_install.m package_install.m
+ADD Eurobench_format_code/package_install.m package_install.m
 RUN pwd; ls
 RUN octave package_install.m
 RUN ln -s /octave/bin/octave /usr/bin/octave
@@ -19,8 +19,8 @@ RUN ln -s /octave/bin/octave /usr/bin/octave
 # create user account, and create user home dir
 RUN useradd -ms /bin/bash bench
 
-ADD src /home/bench/src
-ADD run_bench_pi /home/bench/
+ADD Eurobench_format_code/src /home/bench/src
+ADD Eurobench_format_code/run_bench_pi /home/bench/
 
 # set the user as owner of the copied files.
 RUN chown -R bench:bench /home/bench/
