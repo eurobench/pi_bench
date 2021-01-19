@@ -16,6 +16,6 @@ function sts_metrics = calculate_sts_metrics(data, kinematics, fsamp, protocol)
     kinematic_reg = kinematic_repeatability(kinematics,fsamp);
     CoM_work = abs(tot_mech_pwr(data,kinematics));
     
-    sts_metrics = {[PI1],[subphases],[CoP_dist],[ult_time],[ult_os],[kinematic_reg],[CoM_work]};
+    sts_metrics = {[PI1],[subphases],[CoP_dist],[ult_time],[ult_os'],[kinematic_reg],[CoM_work]};
   
 endfunction
