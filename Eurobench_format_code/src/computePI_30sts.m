@@ -73,9 +73,9 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
     filename = strcat(result_dir, "/", "ult_time", ".yaml")
     store_vector(filename, sts_metrics{4}, labels, types{1});
 
-    labels = strcat("",'\n');
+    labels = strcat("{antero-posterior, medio-lateral}",'\n');
     filename = strcat(result_dir, "/", "ult_overshoot", ".yaml")
-    store_vector(filename, sts_metrics{5}, labels, types{1});
+    store_vector(filename, sts_metrics{5}, labels, types{2});
 
     labels = strcat("{Ankle, Knee, Hip, Trunk}",'\n');
     filename = strcat(result_dir, "/", "kinematic_repeatability", ".yaml")
