@@ -1,2 +1,3 @@
 type: 'vector'
-value: [0.01238]
+label: [antero-posterior, medio-lateral]
+value: [0.01238, 0.01215]

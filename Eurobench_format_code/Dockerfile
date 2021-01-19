@@ -20,7 +20,8 @@ RUN ln -s /octave/bin/octave /usr/bin/octave
 RUN useradd -ms /bin/bash bench
 
 ADD Eurobench_format_code/src /home/bench/src
-ADD Eurobench_format_code/run_bench_pi /home/bench/
+ADD Eurobench_format_code/run_bench_5sts_pi /home/bench/
+ADD Eurobench_format_code/run_bench_30sts_pi /home/bench/
 
 # set the user as owner of the copied files.
 RUN chown -R bench:bench /home/bench/

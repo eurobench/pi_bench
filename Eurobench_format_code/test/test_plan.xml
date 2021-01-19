@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <test_plan>
-<test pi_name="./run_bench_pi"
+<test pi_name="./run_bench_5sts_pi"
       parameters="/in/subject_01_5sts_chair_raw_01.csv /in/subject_01_calib_chair_raw_01.csv /out"
       input_folder="input"
       output_folder="output/subject_01_5sts"/>
-<test pi_name="./run_bench_pi"
+<test pi_name="./run_bench_30sts_pi"
       parameters="/in/subject_01_30sts_chair_raw_01.csv /in/subject_01_calib_chair_raw_01.csv /out"
       input_folder="input"
       output_folder="output/subject_01_30sts"/>
-<test pi_name="./run_bench_pi"
+<test pi_name="./run_bench_5sts_pi"
       parameters="/in/subject_02_5sts_chair_raw_01.csv /in/subject_02_calib_chair_raw_01.csv /out"
       input_folder="input"
       output_folder="output/subject_02_5sts"/>

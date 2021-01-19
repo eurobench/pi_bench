@@ -14,4 +14,15 @@ printf ("data file: %s\n", arg_list{1});
 printf ("calib file: %s\n", arg_list{2});
 printf ("result dir: %s\n", arg_list{3});
 
-computePI(arg_list{1}, arg_list{2}, arg_list{3})
+# return to be 0 on success
+is_ok = 0;
+
+try
+  computePI_30sts(arg_list{1}, arg_list{2}, arg_list{3});
+catch err
+  warning(err.identifier, err.message);
+  is_ok = 1;
+end_try_catch
+
+printf("Bye\n");
+quit(is_ok);
