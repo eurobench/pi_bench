@@ -1,2 +1,3 @@
 type: 'vector'
+label: [Ankle, Knee, Hip, Trunk]
 value: [0.78648, 0.99112, 0.98944, 0.94391]

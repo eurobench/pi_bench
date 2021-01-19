@@ -56,34 +56,30 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
     sts_metrics = calculate_sts_metrics(data, kinematics, fsamp, protocol);
     
     types = {"scalar\n", "array of scalars\n", "vector\n"};
-      
-    labels = strcat("",'\n');  
+
     filename = strcat(result_dir, "/", "30sSTS_repetitions", ".yaml")
-    store_vector(filename, sts_metrics{1}, ,labels, types{1});
+    store_scalar(filename, sts_metrics{1});
 
-    labels = strcat("{Flexion Momentum, Momentum Transfer, Extension}",'\n');
+    labels = "Flexion Momentum, Momentum Transfer, Extension";
     filename = strcat(result_dir, "/", "subphases_duration", ".yaml")
-    store_vector(filename, sts_metrics{2}, labels, types{2});
+    store_vector(filename, sts_metrics{2}, labels);
 
-    labels = strcat("",'\n');
     filename = strcat(result_dir, "/", "CoP_stability", ".yaml")
-    store_vector(filename, sts_metrics{3}, labels, types{1});
+    store_scalar(filename, sts_metrics{3});
 
-    labels = strcat("",'\n');
     filename = strcat(result_dir, "/", "ult_time", ".yaml")
-    store_vector(filename, sts_metrics{4}, labels, types{1});
+    store_scalar(filename, sts_metrics{4});
 
-    labels = strcat("",'\n');
     filename = strcat(result_dir, "/", "ult_overshoot", ".yaml")
-    store_vector(filename, sts_metrics{5}, labels, types{1});
+    store_scalar(filename, sts_metrics{5});
 
-    labels = strcat("{Ankle, Knee, Hip, Trunk}",'\n');
+    labels = "Ankle, Knee, Hip, Trunk";
     filename = strcat(result_dir, "/", "kinematic_repeatability", ".yaml")
-    store_vector(filename, sts_metrics{6}, labels, types{2});
-    
-    labels = strcat("",'\n');
+    store_vector(filename, sts_metrics{6}, labels);
+
+    labels = "";
     filename = strcat(result_dir, "/", "CoM_work", ".yaml")
-    store_vector(filename, sts_metrics{7}, labels, types{1});
+    store_vector(filename, sts_metrics{7}, labels);
     
     PI = sts_metrics;
     
