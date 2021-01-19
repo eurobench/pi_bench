@@ -53,27 +53,36 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
     %computes the PIs
     
     sts_metrics = calculate_sts_metrics(data, kinematics, fsamp, protocol);
-      
-    filename = strcat(result_dir, "/", "5STS_duration", ".yaml")
-    store_vector(filename, sts_metrics{1});
-
-    filename = strcat(result_dir, "/", "subphases_duration", ".yaml")
-    store_vector(filename, sts_metrics{2});
-
-    filename = strcat(result_dir, "/", "sts_CoP_stability", ".yaml")
-    store_vector(filename, sts_metrics{3});
-
-    filename = strcat(result_dir, "/", "ult_time", ".yaml")
-    store_vector(filename, sts_metrics{4});
-
-    filename = strcat(result_dir, "/", "ult_overshoot", ".yaml")
-    store_vector(filename, sts_metrics{5});
-
-    filename = strcat(result_dir, "/", "kinematic_repeatability", ".yaml")
-    store_vector(filename, sts_metrics{6});
     
+    types = {"scalar\n", "array of scalars\n", "vector\n"};
+    
+    labels = strcat("",'\n');
+    filename = strcat(result_dir, "/", "5STS_duration", ".yaml")
+    store_vector(filename, sts_metrics{1}, labels, types{1});
+
+    labels = strcat("{Flexion Momentum, Momentum Transfer, Extension}",'\n');
+    filename = strcat(result_dir, "/", "subphases_duration", ".yaml")
+    store_vector(filename, sts_metrics{2}, labels, types{2});
+
+    labels = strcat("",'\n');
+    filename = strcat(result_dir, "/", "CoP_stability", ".yaml")
+    store_vector(filename, sts_metrics{3}, labels, types{1});
+
+    labels = strcat("",'\n');
+    filename = strcat(result_dir, "/", "ult_time", ".yaml")
+    store_vector(filename, sts_metrics{4}, labels, types{1});
+
+    labels = strcat("",'\n');
+    filename = strcat(result_dir, "/", "ult_overshoot", ".yaml")
+    store_vector(filename, sts_metrics{5}, labels, types{1});
+
+    labels = strcat("{Ankle, Knee, Hip, Trunk}",'\n');
+    filename = strcat(result_dir, "/", "kinematic_repeatability", ".yaml")
+    store_vector(filename, sts_metrics{6}, labels, types{2});
+    
+    labels = strcat("",'\n');
     filename = strcat(result_dir, "/", "CoM_work", ".yaml")
-    store_vector(filename, sts_metrics{7});
+    store_vector(filename, sts_metrics{7}, labels, types{1});
     
     PI = sts_metrics;
     
