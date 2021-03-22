@@ -22,6 +22,20 @@ function [Chair_data,data_sh] = synch_acq(sh,s)
 %cell
 %Cristiano De Marchis, July 2020
 
+idx_out = get_shimmer_to_connect(sh);
+
+count = 1;
+
+while ~isempty(idx_out) && count<10
+    
+    for i = 1:length(idx_out)
+        connectshimmer(sh{idx_out(i)},128,flag(idx_out(i)));
+    end
+    idx_out = get_shimmer_to_connect(sh);
+    
+    count = count+1;
+end
+
 
 s.UserData.signals = [];
 
@@ -44,6 +58,7 @@ s.stop;
 
 
 data_sh = cellfun(@(x) x.getdata('c'),sh,'uniformoutput',false);
+pause(3);
 
 cellfun(@(x) x.stop,sh,'uniformoutput',false);
 

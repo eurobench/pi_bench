@@ -8,26 +8,30 @@ function [sh,s] = connect_sensors(COMPORT,fsamp_sh, devicename, ni_channels, fsa
 %fsamp_sh: sampling rate of the shimmer sensors
 %
 %sh: cell array containing the Shimmer handle classes
+flag = zeros(size(COMPORT));
+flag(end) = 1;
 
 for i = 1:length(COMPORT)
     sh{i} = ShimmerHandleClass(COMPORT{i});
 end
 
-cellfun(@(x) x.connect,sh,'uniformoutput',false);
-cellfun(@(x) x.setsamplingrate(fsamp_sh),sh,'uniformoutput',false);
-cellfun(@(x) x.enabletimestampunix(1),sh,'uniformoutput',false);
-
-SensorMacros = SetEnabledSensorsMacrosClass;
-
-sh{end}.setinternalboard('EMG');
-
 for i = 1:length(sh)
     
-    if i == length(sh)
-        sh{i}.setenabledsensors('LowNoiseAccel',1,'Gyro',1,'Mag',0,'WideRangeAccel',0,'EMG',1);
-    else
-        sh{i}.setenabledsensors('LowNoiseAccel',1,'Gyro',1,'WideRangeAccel',0,'Mag',0);
+    connectshimmer(sh{i},fsamp_sh,flag(i));
+end
+
+idx_out = get_shimmer_to_connect(sh);
+
+count = 1;
+
+while ~isempty(idx_out) && count<10
+    
+    for i = 1:length(idx_out)
+        connectshimmer(sh{idx_out(i)},fsamp_sh,flag(idx_out(i)));
     end
+    idx_out = get_shimmer_to_connect(sh);
+    
+    count = count+1;
 end
 
 
