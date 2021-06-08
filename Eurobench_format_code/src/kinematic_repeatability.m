@@ -23,20 +23,23 @@ function kinematic_reg = kinematic_repeatability(kinematics,fs)
 %kinematic_reg: four elements array of scalars indicating the regularity of
 %the ankle, knee, hip and trunk kinematics, respectively
 
-for i = 1:4
+for i = 1:size(kinematics,2)
     
     joint_angle = kinematics(:,i);
     Rxx = xcorr(joint_angle,'unbiased');
-    Rxx = Rxx/max(Rxx);
+    m = max(Rxx(round(length(Rxx)/2) - 100:round(length(Rxx)/2) + 100));
+    Rxx = Rxx/m;
     [reg,locs] = findpeaks(Rxx-min(Rxx)+0.01,'minpeakdistance',round(fs*0.7));
     reg = reg(locs>length(Rxx)/2+2);
     reg = reg+min(Rxx)-0.01;
     
-    if i == 1 || i == 4
-        kinematic_reg(i) = reg(2);
-    else
-        kinematic_reg(i) = reg(1);
-    end
+    kinematic_reg(i) = max([reg(1) reg(2)]);
+    
+%     if i == 1 || i == 4
+%         kinematic_reg(i) = reg(2);
+%     else
+%         kinematic_reg(i) = reg(1);
+%     end
     
 end
     
