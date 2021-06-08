@@ -1,2 +1,3 @@
 type: 'vector'
+label: [Flexion Momentum, Momentum Transfer, Extension]
 value: [0.18292, 0.16103, 0.47527]

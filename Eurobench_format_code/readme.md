@@ -4,7 +4,7 @@
 The testing input folder contains five .csv files, including data from 2 subjects:
 
 - `Subject01_calib_chair_raw_01.csv` – contains the data from the calibration procedure for subject01.
-  It is used for calculating the calibration parameters for the subsequent estimation of the joint kinematics in the sagittal plane. 
+  It is used for calculating the calibration parameters for the subsequent estimation of the joint kinematics in the sagittal plane.
 - `Subject01_5sts_chair_raw_01.csv` – contains the data from a single 5STS trial of subject01
 - `Subject01_30sts_chair_raw_01.csv` – contains the data from a single 30sSTS trial of subject01
 - `Subject02_calib_chair_raw_01.csv` – contains the data from the calibration procedure for subject02. It is used for calculating the calibration parameters for the subsequent estimation of the joint kinematics in the sagittal plane.
@@ -16,16 +16,22 @@ This function takes as input a .csv file containing the raw data from a single s
 
 ## command
 
-From an Octave environment, from the `src`folder, assuming the folder `../out` has been previously created:
+From an Octave environment, from the `src` folder, assuming the folder `../out` has been previously created:
 
 ```term
-computePI("../test/input/subject_01_5sts_chair_raw_01.csv", "../test/input/subject_01_calib_chair_raw_01.csv", "../out/")
+# for the 5sts protocol
+computePI_5sts("../test/input/subject_01_5sts_chair_raw_01.csv", "../test/input/subject_01_calib_chair_raw_01.csv", "../out/")
+# for the 30sts protocol
+computePI_30sts("../test/input/subject_01_30sts_chair_raw_01.csv", "../test/input/subject_01_calib_chair_raw_01.csv", "../out/")
 ```
 
-From a linux terminal, from the `Eurobench_format_code` folder:
+From a Linux terminal, from the `Eurobench_format_code` folder:
 
 ```term
-./run_bench_pi test/input/subject_01_5sts_chair_raw_01.csv test/input/subject_01_calib_chair_raw_01.csv out
+# for the 5sts protocol
+./run_bench_5sts_pi test/input/subject_01_5sts_chair_raw_01.csv test/input/subject_01_calib_chair_raw_01.csv out
+# for the 30sts protocol
+./run_bench_30sts_pi test/input/subject_01_30sts_chair_raw_01.csv test/input/subject_01_calib_chair_raw_01.csv out
 ```
 
 ## Docker image
@@ -41,5 +47,7 @@ docker build . -t pi_bench
 Assuming data files have standardized names (see above), and folder `out` is already created (to contain output file):
 
 ```shell
-docker run --rm -v $PWD/test/input:/in -v $PWD/out:/out pi_bench ./run_bench_pi /in/subject_01_5sts_chair_raw_01.csv /in/subject_01_calib_chair_raw_01.csv /out
+docker run --rm -v $PWD/test/input:/in -v $PWD/out:/out pi_bench ./run_bench_5sts_pi /in/subject_01_5sts_chair_raw_01.csv /in/subject_01_calib_chair_raw_01.csv /out
+# for the 30sts protocol
+docker run --rm -v $PWD/test/input:/in -v $PWD/out:/out pi_bench ./run_bench_30sts_pi /in/subject_01_30sts_chair_raw_01.csv /in/subject_01_calib_chair_raw_01.csv /out
 ```
