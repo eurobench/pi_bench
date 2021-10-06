@@ -41,12 +41,12 @@ lo = sts_points(2,:);
 mad = sts_points(3,:);
 fhe = sts_points(4,:);
 
-CoP_seat = (data(:,14:15));
+CoP_seat = (data(:,8:9));
 CoP_ground = (data(:,16:17));
 CoP_ground(:,1) = CoP_ground(:,1)+0.4; %the AP coordinate of the ground force plate has a 0.4m offset
 
 F_seat = sqrt(sum(data(:,2:4).^2,2));
-F_ground = sqrt(sum(data(:,8:10).^2,2));
+F_ground = sqrt(sum(data(:,10:12).^2,2));
 
 
 CoP_avg = ((CoP_seat.*F_seat + CoP_ground.*F_ground)./(F_seat+F_ground))/2; %this is the average CoP coordinate across the 2 force plates

@@ -46,7 +46,7 @@ end_seat_pot = find(flip(kinematics(:,4))>5,1);
 end_seat_pot = length(kinematics)-end_seat_pot;
 
 kk = -sum(abs(kinematics'));
-[m,zvel_seat] = findpeaks(kk'-min(kk)+0.01,'minpeakheight',-20-min(kk)+0.01,'minpeakdistance',0.5*fs);
+[m,zvel_seat] = findpeaks(kk'-min(kk)+0.01,'minpeakheight',-50-min(kk)+0.01,'minpeakdistance',0.5*fs);
 
 zvel_seat(zvel_seat<init_seat) = [];
 zvel_seat = [init_seat;zvel_seat];
@@ -58,12 +58,18 @@ zvel_seat(zvel_seat>end_seat_pot) = [];
 %the zvel_seat points are used to start the segmentation (excluding the last one)
 
 fz = data(:,4)-min(data(:,4));
+fz = fz/max(fz);
 
 for i = 1:length(zvel_seat)
+    
+    if ~isempty(find(fz(zvel_seat(i):end)<0.2,1)+zvel_seat(i))
     t0(i) = find(kinematics(zvel_seat(i):end,4)>5,1)+zvel_seat(i);
     lo(i) = find(fz(zvel_seat(i):end)<0.2,1)+zvel_seat(i);
     fhe(i) = zvel_stand(i);
     mad(i) = find(kinematics(lo(i):fhe(i),1) == max(kinematics(lo(i):fhe(i),1)))+lo(i);
+    end
+    
+    
     
 end
 

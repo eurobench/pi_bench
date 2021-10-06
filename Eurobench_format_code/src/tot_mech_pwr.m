@@ -25,12 +25,13 @@ pelvis_IMU = data(:,36:41);
 [pp, vel, evt] = sts_CoM(pelvis_IMU,kinematics);
 
 F_seat = data(evt(1)+1:evt(end),2:4);
-F_ground = data(evt(1)+1:evt(end),8:10);
+F_ground = data(evt(1)+1:evt(end),10:12);
 
 F_tot = F_seat + F_ground;
 
-CoM_work = sum(vel.*F_tot);
-CoM_work = CoM_work([1 3]);
+CoM_w = sum(vel.*F_tot,1);
+CoM_work = sum(CoM_w);
+
 
 
 
