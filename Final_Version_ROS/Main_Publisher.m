@@ -27,29 +27,35 @@ close all
 %'5sts'
 %'30sts'
 
-subject = 1;
+subject = 19;
+num_session = 4;
+ff = "Mizio_30sts_ec_trial2.mat";
 COMPORT = {'COM1', 'COM2'};
 protocol = '30sts';
+
+
 %% Initiation process
 % sessions are counted after starting matlab
-if exist('num_session', 'var')
-    num_session = num_session + 1;
-else
-    num_session = 1;
-end
-
-% create name of the file
-if subject < 10
-    subject_str = append('subject_0', num2str(subject),'_',protocol);
-else
-    subject_str = append('subject_', num2str(subject),'_',protocol);
-end
+% if exist('num_session', 'var')
+%     num_session = num_session + 1;
+% else
+%     num_session = 1;
+% end
 
 if num_session < 10
     num_session_str = append('0', num2str(num_session));
 else
     num_session_str = num2str(num_session);
 end
+
+% create name of the file
+if subject < 10
+    subject_str = append('subject_0', num2str(subject));
+else
+    subject_str = append('subject_', num2str(subject));
+end
+
+filename = append(subject_str,'_run_',num_session_str,'_',protocol,'_platformData.csv');
 
 %set up variables for acquiring data
 devicename = 'Dev2'; % Dev1 real device, Dev2 simulated device
