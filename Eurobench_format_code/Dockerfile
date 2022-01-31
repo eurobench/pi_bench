@@ -9,7 +9,11 @@ RUN apt-get update \
 RUN wget -O signal-1.4.1.tar.gz https://octave.sourceforge.io/download.php?package=signal-1.4.1.tar.gz \
     && wget -O control-3.2.0.tar.gz https://octave.sourceforge.io/download.php?package=control-3.2.0.tar.gz \
     && wget -O io-2.4.12.tar.gz https://octave.sourceforge.io/download.php?package=io-2.4.12.tar.gz \
-    && wget -O statistics-1.4.1.tar.gz https://octave.sourceforge.io/download.php?package=statistics-1.4.1.tar.gz
+    && wget -O statistics-1.4.1.tar.gz https://octave.sourceforge.io/download.php?package=statistics-1.4.1.tar.gz \
+    && wget -O mapping-1.4.1.tar.gz https://octave.sourceforge.io/download.php?package=mapping-1.4.1.tar.gz \
+    && wget -O matgeom-1.2.2.tar.gz https://octave.sourceforge.io/download.php?package=matgeom-1.2.2.tar.gz \
+    && wget -O geometry-4.0.0.tar.gz https://octave.sourceforge.io/download.php?package=geometry-4.0.0.tar.gz
+
 
 ADD Eurobench_format_code/package_install.m package_install.m
 RUN pwd; ls

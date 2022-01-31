@@ -19,8 +19,8 @@ is_ok = 0;
 
 try
   computePI_5sts(arg_list{1}, arg_list{2}, arg_list{3});
-catch err
-  warning(err.identifier, err.message);
+catch
+  printf("Error: %s\n", lasterr);
   is_ok = 1;
 end_try_catch
 

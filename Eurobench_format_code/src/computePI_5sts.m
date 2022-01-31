@@ -22,7 +22,6 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
     else
         disp('Using Matlab')
     end
-
     % get the csv data and calculate kinematics
     
     calib = csv2cell(csv_calib_file);
@@ -55,40 +54,39 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 
     protocol = true;
     
-    
-    %computes the PIs
-    
     sts_metrics = calculate_sts_metrics(data, kinematics, fsamp, protocol);
-    
+    sts_metrics
+    typeinfo(sts_metrics)
     types = {"scalar\n", "array of scalars\n", "vector\n"};
     
-    labels = strcat("",'\n');
     filename = strcat(result_dir, "/", "5STS_duration", ".yaml")
-    store_vector(filename, sts_metrics{1}, labels, types{1});
+    store_scalar(filename, sts_metrics{1});
 
-    labels = strcat("{Flexion Momentum, Momentum Transfer, Extension}",'\n');
+    labels = "[Flexion Momentum, Momentum Transfer, Extension]";
     filename = strcat(result_dir, "/", "subphases_duration", ".yaml")
-    store_vector(filename, sts_metrics{2}, labels, types{2});
+    typeinfo(sts_metrics{2})
+    store_vector(filename, sts_metrics{2}, labels);
 
-    labels = strcat("",'\n');
+    labels = ""
     filename = strcat(result_dir, "/", "CoP_stability", ".yaml")
-    store_vector(filename, sts_metrics{3}, labels, types{1});
+    typeinfo(sts_metrics{3})
+    sts_metrics{3}
+    reshape(sts_metrics{3}, 1, 2)
+    store_vector(filename, reshape(sts_metrics{3}, 1, 2), labels);
 
-    labels = strcat("",'\n');
     filename = strcat(result_dir, "/", "ult_time", ".yaml")
-    store_vector(filename, sts_metrics{4}, labels, types{1});
+    store_scalar(filename, sts_metrics{4}, labels);
 
-    labels = strcat("{antero-posterior, medio-lateral}",'\n');
+    labels = "[antero-posterior, medio-lateral]";
     filename = strcat(result_dir, "/", "ult_overshoot", ".yaml")
-    store_vector(filename, sts_metrics{5}, labels, types{2});
+    store_vector(filename, sts_metrics{5}, labels);
 
-    labels = strcat("{Ankle, Knee, Hip, Trunk}",'\n');
+    labels = "[Ankle, Knee, Hip, Trunk]";
     filename = strcat(result_dir, "/", "kinematic_repeatability", ".yaml")
-    store_vector(filename, sts_metrics{6}, labels, types{2});
-    
-    labels = strcat("",'\n');
+    store_vector(filename, sts_metrics{6}, labels);
+
     filename = strcat(result_dir, "/", "CoM_work", ".yaml")
-    store_vector(filename, sts_metrics{7}, labels, types{1});
+    store_scalar(filename, sts_metrics{7});
     
     
     PI = sts_metrics;
